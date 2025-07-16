@@ -1,14 +1,12 @@
-"use client";
+'use client';
 
-import { QueryProvider } from "@/providers/query-provider";
-import { Toaster } from "react-hot-toast";
-import AnimatedBackground from "@/components/shared/BackgroudBox";
-import ThemeProvider from "@/lib/Theme-Provider";
-import { ReactNode, useEffect, useState } from "react";
+import { QueryProvider } from '@/providers/query-provider';
+import { Toaster } from 'react-hot-toast';
+import AnimatedBackground from '@/components/shared/BackgroudBox';
+import ThemeProvider from '@/providers/Theme-Provider';
+import { ReactNode, useEffect, useState } from 'react';
 
-const toastOptions = {
-  /* ... your styled config ... */
-};
+const toastOptions = {};
 
 export default function ClientWrapper({ children }: { children: ReactNode }) {
   const [mounted, setMounted] = useState(false);

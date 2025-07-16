@@ -1,7 +1,6 @@
-// lib/theme.ts
-import { createTheme } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 
-const gameTheme = createTheme({
+let gameTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
@@ -40,10 +39,7 @@ const gameTheme = createTheme({
     h1: {
       fontWeight: 700,
       fontSize: '3rem',
-      background: 'linear-gradient(45deg, #00ff88, #00ccff)',
-      WebkitBackgroundClip: 'text',
-      WebkitTextFillColor: 'transparent',
-      textShadow: '0 0 20px rgba(0, 255, 136, 0.3)',
+      color: '#00ff88',
     },
     h2: {
       fontWeight: 600,
@@ -61,28 +57,17 @@ const gameTheme = createTheme({
       fontSize: '1rem',
     },
   },
+  shape: {
+    borderRadius: 12,
+  },
   components: {
     MuiButton: {
       styleOverrides: {
-        root: {
-          borderRadius: '12px',
-          textTransform: 'none',
-          fontWeight: 600,
-          fontSize: '1rem',
-          padding: '12px 24px',
-          background: 'linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 204, 255, 0.2))',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(0, 255, 136, 0.3)',
-          color: '#fff',
-          transition: 'all 0.3s ease',
+        containedPrimary: {
+          background: 'linear-gradient(to right, #00ccff, #00ff88)',
+          color: '#000',
           '&:hover': {
-            background: 'linear-gradient(135deg, rgba(0, 255, 136, 0.4), rgba(0, 204, 255, 0.4))',
-            transform: 'translateY(-2px)',
-            boxShadow: '0 8px 25px rgba(0, 255, 136, 0.3)',
-          },
-          '&:disabled': {
-            opacity: 0.4,
-            pointerEvents: 'none',
+            background: 'linear-gradient(to right, #00b8e6, #00e673)',
           },
         },
       },
@@ -164,7 +149,22 @@ const gameTheme = createTheme({
         },
       },
     },
+    MuiTypography: {
+      styleOverrides: {
+        h4: {
+          fontWeight: 600,
+          fontSize: '2rem',
+          textAlign: 'center',
+          background: 'linear-gradient(45deg, #00ff88, #00ccff)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          textShadow: '0 0 20px rgba(0, 255, 136, 0.3)',
+        },
+      },
+    },
   },
 });
+
+gameTheme = responsiveFontSizes(gameTheme);
 
 export default gameTheme;

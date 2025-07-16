@@ -1,16 +1,17 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Box, Button, Typography, CircularProgress } from "@mui/material";
-import { CustomFormTextField } from "@/components/shared/CustomFormTextField";
-import { CustomCheckbox } from "@/components/shared/CustomCheckbox";
-import { useRegisterUser } from "@/queries/auth-service";
-import toast from "react-hot-toast";
-import { registerSchema } from "@/schemas/authSchema";
-import { RegisterFormInputs } from "@/types/userTypes";
-import Link from "next/link";
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Box, Button, Typography } from '@mui/material';
+import { CustomFormTextField } from '@/components/shared/CustomFormTextField';
+import { CustomCheckbox } from '@/components/shared/CustomCheckbox';
+import { useRegisterUser } from '@/queries/auth-service';
+import toast from 'react-hot-toast';
+import { registerSchema } from '@/schemas/authSchema';
+import { RegisterFormInputs } from '@/types/userTypes';
+import Link from 'next/link';
+import CustomButton from '@/components/shared/CustomButton';
 
 export default function RegisterPage() {
   const { mutate, isPending } = useRegisterUser();
@@ -18,12 +19,12 @@ export default function RegisterPage() {
   const { control, handleSubmit, reset } = useForm({
     resolver: yupResolver(registerSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      email: "",
-      hash: "",
-      confirmPassword: "",
+      firstName: '',
+      lastName: '',
+      phoneNumber: '',
+      email: '',
+      hash: '',
+      confirmPassword: '',
     },
   });
 
@@ -32,7 +33,7 @@ export default function RegisterPage() {
 
     if (userPayload.birthDate) {
       userPayload.birthDate = new Date(
-        userPayload.birthDate
+        userPayload.birthDate,
       ).toISOString() as any;
     }
 
@@ -42,7 +43,7 @@ export default function RegisterPage() {
         setIsRegistered(true);
         reset();
       },
-      onError: (err: any) => {
+      onError: (err: Error) => {
         const msg = err.message;
         toast.error(msg);
       },
@@ -54,30 +55,19 @@ export default function RegisterPage() {
       {isRegistered ? (
         <Box
           sx={{
-            textAlign: "center",
+            textAlign: 'center',
             p: 4,
-            color: "#fff",
+            color: '#fff',
           }}
         >
-          <Typography
-            variant="h4"
-            sx={{
-              mb: 2,
-              fontWeight: 600,
-              background: "linear-gradient(45deg, #00ccff, #00ff88)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            Verify Your Email ✉️
-          </Typography>
-          <Typography sx={{ mb: 3, color: "#b0b0b0" }}>
+          <Typography variant="h4">Verify Your Email ✉️</Typography>
+          <Typography sx={{ mb: 3, color: '#b0b0b0' }}>
             We&apos;ve sent a verification link to your email. Please check your
             inbox and confirm your email address to complete the registration.
           </Typography>
           <Button
             variant="outlined"
-            sx={{ mt: 2, borderColor: "#00ccff", color: "#00ccff" }}
+            sx={{ mt: 2, borderColor: '#00ccff', color: '#00ccff' }}
             onClick={() => setIsRegistered(false)}
           >
             Back to Sign Up
@@ -86,38 +76,24 @@ export default function RegisterPage() {
       ) : (
         <Box
           component="form"
+          sx={{
+            maxWidth: 420,
+            backdropFilter: 'blur(12px)',
+            background: 'rgba(255, 255, 255, 0.05)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: 1,
+            p: 4,
+          }}
           onSubmit={handleSubmit(onSubmit)}
           noValidate
-          sx={{
-            maxWidth: 500,
-            width: "100%",
-            backdropFilter: "blur(12px)",
-            background: "rgba(255, 255, 255, 0.05)",
-            border: "1px solid rgba(255, 255, 255, 0.1)",
-            borderRadius: 4,
-            boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
-            p: 4,
-            color: "#fff",
-            zIndex: 2,
-          }}
         >
-          <Typography
-            variant="h4"
-            align="center"
-            sx={{
-              mb: 1,
-              fontWeight: 600,
-              background: "linear-gradient(45deg, #ff6b35, #00ccff)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
+          <Typography variant="h4" align="center">
             Create Account
           </Typography>
 
           <Typography
             align="center"
-            sx={{ mb: 3, color: "#b0b0b0", fontSize: "0.95rem" }}
+            sx={{ mb: 3, color: '#b0b0b0', fontSize: '0.95rem' }}
           >
             Join the future. Fast, secure, and stylish sign-up.
           </Typography>
@@ -177,44 +153,30 @@ export default function RegisterPage() {
             label="I agree to the terms"
           />
 
-          <Button
+          <CustomButton
+            fullWidth
             type="submit"
             variant="contained"
-            fullWidth
-            sx={{
-              mt: 3,
-              py: 1.4,
-              fontWeight: 500,
-              fontSize: "1rem",
-              background: "linear-gradient(to right, #00ff88, #00ccff)",
-              color: "#000",
-              "&:hover": {
-                background: "linear-gradient(to right, #00ccff, #00ff88)",
-              },
-            }}
-            disabled={isPending}
+            loading={isPending}
           >
-            {isPending ? (
-              <CircularProgress size={24} color="inherit" />
-            ) : (
-              "Register"
-            )}
-          </Button>
+            Register
+          </CustomButton>
+
           <Typography
             variant="body2"
             align="center"
-            sx={{ mt: 1, color: "#b0b0b0" }}
+            sx={{ mt: 1, color: '#b0b0b0' }}
           >
-            Don&apos;t have an account?{" "}
+            Already have an account?{' '}
             <Link
               href="login"
               style={{
-                color: "#00ff88",
-                textDecoration: "underline",
+                color: '#00ff88',
+                textDecoration: 'underline',
                 fontWeight: 500,
               }}
             >
-              Register here
+              Login here
             </Link>
           </Typography>
         </Box>

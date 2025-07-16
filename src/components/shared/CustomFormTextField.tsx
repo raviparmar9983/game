@@ -1,25 +1,26 @@
-import React, { forwardRef } from "react";
-import { TextField, TextFieldProps } from "@mui/material";
+import React, { forwardRef, memo } from 'react';
+import { TextField, TextFieldProps } from '@mui/material';
 import {
   useController,
+  useFormContext,
   FieldValues,
   Path,
   PathValue,
-  useFormContext,
-} from "react-hook-form";
+} from 'react-hook-form';
 
-type CustomFormTextFieldProps<TFieldValues extends FieldValues = FieldValues> =
-  {
-    name: Path<TFieldValues>;
-    control?: any;
-    defaultValue?: PathValue<TFieldValues, Path<TFieldValues>>;
-    label?: string;
-    id?: string;
-    errorMessage?: string;
-  } & Omit<TextFieldProps, "name" | "defaultValue" | "ref">;
+export type CustomFormTextFieldProps<
+  TFieldValues extends FieldValues = FieldValues,
+> = {
+  name: Path<TFieldValues>;
+  control?: any;
+  defaultValue?: PathValue<TFieldValues, Path<TFieldValues>>;
+  label?: string;
+  id?: string;
+  errorMessage?: string;
+} & Omit<TextFieldProps, 'name' | 'defaultValue' | 'ref'>;
 
-export const CustomFormTextField = forwardRef(function CustomFormTextField<
-  TFieldValues extends FieldValues = FieldValues
+const CustomFormTextFieldBase = forwardRef(function CustomFormTextField<
+  TFieldValues extends FieldValues = FieldValues,
 >(
   {
     name,
@@ -30,7 +31,7 @@ export const CustomFormTextField = forwardRef(function CustomFormTextField<
     errorMessage,
     ...textFieldProps
   }: CustomFormTextFieldProps<TFieldValues>,
-  ref: React.Ref<HTMLInputElement>
+  ref: React.Ref<HTMLInputElement>,
 ) {
   const methods = useFormContext<TFieldValues>();
   const resolvedControl = control || methods.control;
@@ -57,3 +58,7 @@ export const CustomFormTextField = forwardRef(function CustomFormTextField<
     />
   );
 });
+
+CustomFormTextFieldBase.displayName = 'CustomFormTextField';
+
+export const CustomFormTextField = memo(CustomFormTextFieldBase);
