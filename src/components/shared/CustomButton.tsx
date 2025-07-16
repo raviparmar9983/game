@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import { memo, forwardRef } from 'react';
 import { Button, ButtonProps, CircularProgress } from '@mui/material';
 import { styled } from '@mui/system';
 
@@ -63,6 +63,6 @@ const CustomButtonBase = forwardRef<HTMLButtonElement, CustomButtonProps>(
 CustomButtonBase.displayName = 'CustomButton';
 
 // Export memoized version for performance
-const CustomButton = React.memo(CustomButtonBase);
+const CustomButton = memo(CustomButtonBase);
 
 export default CustomButton;
