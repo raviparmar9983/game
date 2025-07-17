@@ -49,7 +49,7 @@ const conicEffectStyle = {
   zIndex: 0,
 };
 
-export default function AnimatedBackground({
+export function AnimatedBackground({
   children,
   enableGridAnimation = true,
   enableConicEffect = true,

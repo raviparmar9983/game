@@ -167,4 +167,4 @@ let gameTheme = createTheme({
 
 gameTheme = responsiveFontSizes(gameTheme);
 
-export default gameTheme;
+export { gameTheme };

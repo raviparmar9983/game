@@ -1,8 +1,6 @@
 'use client';
 
-import CreateGameForm from '@/components/game/CreateGameForm';
-import CustomButton from '@/components/shared/CustomButton';
-import CustomModal from '@/components/shared/CustomModal';
+import { CreateGameForm, CustomButton, CustomModal } from '@/components';
 import { useCallback, useState } from 'react';
 
 const GamePage = () => {

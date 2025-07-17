@@ -4,15 +4,17 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Box, Typography } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { CustomFormTextField } from '@/components/shared/CustomFormTextField';
-import { CustomCheckbox } from '@/components/shared/CustomCheckbox';
-import { useLoginUser } from '@/queries/auth-service';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
-import { loginSchema } from '@/schemas/authSchema';
+import { loginSchema } from '@/schemas';
 import { setCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
-import CustomButton from '@/components/shared/CustomButton';
+import {
+  CustomFormTextField,
+  CustomCheckbox,
+  CustomButton,
+} from '@/components';
+import { useLoginUser } from '@/queries';
 
 type LoginFormInputs = {
   email: string;
@@ -37,7 +39,7 @@ export default function LoginPage() {
     mutate(data, {
       onSuccess: (res) => {
         const { message, token } = res;
-        if (!token) {
+        if (!token.accessToken) {
           toast.error('Unexpected response. Please try again.');
           return;
         }

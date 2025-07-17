@@ -5,11 +5,10 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Typography } from '@mui/material';
 import toast from 'react-hot-toast';
-import { useForgotPassword } from '@/queries/auth-service';
-import { CustomFormTextField } from '@/components/shared/CustomFormTextField';
-import { ApiResponse } from '@/types/common.type';
-import CustomButton from '@/components/shared/CustomButton';
-import { forgotPasswordSchema } from '@/schemas/authSchema';
+import { forgotPasswordSchema } from '@/schemas';
+import { CustomButton, CustomFormTextField } from '@/components';
+import { useForgotPassword } from '@/queries';
+import { ApiResponse } from '@/types';
 
 type ForgotPasswordInputs = {
   email: string;

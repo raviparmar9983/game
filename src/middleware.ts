@@ -1,21 +1,23 @@
-// middleware.ts or middleware.js
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = request.cookies.get('accessToken');
+
+  // ✅ Read cookie from request using Edge-compatible API
+  const token = request.cookies.get('accessToken')?.value;
 
   const isPublicPath =
-    pathname.startsWith('/auth') || // login, register, reset
-    pathname.startsWith('/_next') || // static Next.js assets
+    pathname.startsWith('/auth') ||
+    pathname.startsWith('/_next') ||
     pathname.startsWith('/favicon.ico');
-  // If path is protected and token is missing → redirect to login
+
+  // Redirect to login if trying to access protected path without token
   if (!isPublicPath && !token) {
     return NextResponse.redirect(new URL('/auth/login', request.url));
   }
 
-  // Prevent redirecting back to /auth/login if already there
+  // Prevent accessing login page if already authenticated
   if (pathname === '/auth/login' && token) {
     return NextResponse.redirect(new URL('/', request.url));
   }

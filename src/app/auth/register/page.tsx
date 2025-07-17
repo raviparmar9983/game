@@ -4,14 +4,15 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
-import { CustomFormTextField } from '@/components/shared/CustomFormTextField';
-import { CustomCheckbox } from '@/components/shared/CustomCheckbox';
-import { useRegisterUser } from '@/queries/auth-service';
 import toast from 'react-hot-toast';
-import { registerSchema } from '@/schemas/authSchema';
-import { RegisterFormInputs } from '@/types/userTypes';
+import { RegisterFormInputs, registerSchema } from '@/schemas';
 import Link from 'next/link';
-import CustomButton from '@/components/shared/CustomButton';
+import {
+  CustomFormTextField,
+  CustomCheckbox,
+  CustomButton,
+} from '@/components';
+import { useRegisterUser } from '@/queries';
 
 export default function RegisterPage() {
   const { mutate, isPending } = useRegisterUser();

@@ -1,12 +1,6 @@
 'use client';
 
-import React, {
-  ReactNode,
-  forwardRef,
-  Ref,
-  memo,
-  useMemo,
-} from 'react';
+import React, { ReactNode, forwardRef, Ref, memo, useMemo } from 'react';
 import {
   Dialog,
   DialogProps,
@@ -67,25 +61,29 @@ const anchorStyleMap: Record<Anchor, React.CSSProperties> = {
 };
 
 const CustomModal = memo(
-  forwardRef<HTMLDivElement, CustomModalProps>(function CustomModal({
-    open,
-    onClose,
-    animation = 'fade',
-    anchor = 'center',
-    size = 'md',
-    children,
-    ...rest
-  }) {
+  forwardRef<HTMLDivElement, CustomModalProps>(function CustomModal(
+    {
+      open,
+      onClose,
+      animation = 'fade',
+      anchor = 'center',
+      size = 'md',
+      children,
+      ...rest
+    },
+    ref,
+  ) {
     const Transition = useMemo(() => getTransition(animation), [animation]);
 
     // Forward ref to the dialog's container
     // useImperativeHandle(ref, () => {
     // Optionally expose dialog methods here
-    //   return {};
+    // return {};
     // });
 
     return (
       <Dialog
+        ref={ref}
         open={open}
         onClose={onClose}
         TransitionComponent={Transition}
@@ -115,4 +113,4 @@ const CustomModal = memo(
   }),
 );
 
-export default CustomModal;
+export { CustomModal };

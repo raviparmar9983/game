@@ -1,8 +1,8 @@
 // ThemeRegistry.tsx
 'use client';
+import { gameTheme } from '@/lib';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import gameTheme from '@/lib/theme';
 
 interface ThemeRegistryProps {
   children: React.ReactNode;
@@ -19,4 +19,4 @@ const ThemeRegistry: React.FC<ThemeRegistryProps> = ({ children }) => {
   );
 };
 
-export default ThemeRegistry;
+export { ThemeRegistry };

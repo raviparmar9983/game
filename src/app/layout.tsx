@@ -1,7 +1,7 @@
 // app/layout.tsx
+import { Providers } from '@/providers';
 import './globals.css';
 import type { Metadata } from 'next';
-import Providers from '@/providers/LayoutProvider';
 
 export const metadata: Metadata = {
   title: 'MUI Emotion SSR Example',

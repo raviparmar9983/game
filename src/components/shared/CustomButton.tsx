@@ -65,4 +65,4 @@ CustomButtonBase.displayName = 'CustomButton';
 // Export memoized version for performance
 const CustomButton = memo(CustomButtonBase);
 
-export default CustomButton;
+export { CustomButton };

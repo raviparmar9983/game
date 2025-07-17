@@ -1,15 +1,15 @@
 'use client';
 import dynamic from 'next/dynamic';
-import AnimatedBackground from '@/components/shared/BackgroudBox';
-import { QueryProvider } from '@/providers/query-provider';
-import ThemeRegistry from './Theme-Provider';
+import { QueryProvider } from '@/providers/QueryProvider';
+import { AnimatedBackground } from '@/components';
+import { ThemeRegistry } from './ThemeProvider';
 
 const Toaster = dynamic(
   () => import('react-hot-toast').then((mod) => mod.Toaster),
   { ssr: false },
 );
 
-export default function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <>
       <ThemeRegistry>

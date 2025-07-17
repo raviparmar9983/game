@@ -4,13 +4,12 @@ import React, { Suspense, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, CircularProgress, Typography } from '@mui/material';
-import { CustomFormTextField } from '@/components/shared/CustomFormTextField';
-import { useResetPassword } from '@/queries/auth-service';
 import toast from 'react-hot-toast';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ApiResponse } from '@/types/common.type';
-import CustomButton from '@/components/shared/CustomButton';
-import { resetPasswordSchema } from '@/schemas/authSchema';
+import { resetPasswordSchema } from '@/schemas';
+import { CustomButton, CustomFormTextField } from '@/components';
+import { useResetPassword } from '@/queries';
+import { ApiResponse } from '@/types';
 
 type ResetPasswordInputs = {
   hash: string;

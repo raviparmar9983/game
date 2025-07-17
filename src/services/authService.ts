@@ -1,5 +1,5 @@
-import api from '@/lib/axiosInstance';
-import { RegisterFormInputs } from '@/schemas/authSchema';
+import { api } from '@/lib';
+import { RegisterFormInputs } from '@/schemas';
 
 export const loginUser = async (data: { email: string; password: string }) => {
   const response = await api.post('/auth/login', data);
