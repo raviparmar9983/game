@@ -9,17 +9,13 @@ import {
   Typography,
   Grid,
   Avatar,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Card,
   CardContent,
   Button,
   LinearProgress,
-  SvgIconProps,
 } from '@mui/material';
 import { useForm, useFieldArray } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
   BeeIcon,
   BoltIcon,
@@ -35,28 +31,28 @@ import {
   StarIcon,
 } from '@/icons';
 import { gridSchema, playerCountSchema, playerDetailsSchema } from '@/schemas';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { CustomFormTextField } from '../shared/CustomFormTextField';
+import { CustomFormSelect } from '../shared/CustomSelect';
 
 export type GameIconItem = {
   id: string;
   label: string;
-  icon: (props: SvgIconProps) => ReactElement;
+  icon: (props: any) => ReactElement;
 };
 
 export const GAME_ICONS: GameIconItem[] = [
-  { id: 'cross', label: 'Cross', icon: (props) => <CrossIcon {...props} /> },
-  { id: 'circle', label: 'Circle', icon: (props) => <CircleIcon {...props} /> },
-  { id: 'star', label: 'Star', icon: (props) => <StarIcon {...props} /> },
-  { id: 'bolt', label: 'Bolt', icon: (props) => <BoltIcon {...props} /> },
-  { id: 'spiral', label: 'Spiral', icon: (props) => <SpiralIcon {...props} /> },
-  { id: 'skull', label: 'Skull', icon: (props) => <SkullIcon {...props} /> },
-  { id: 'danger', label: 'Danger', icon: (props) => <DangerIcon {...props} /> },
-  { id: 'rocket', label: 'Rocket', icon: (props) => <RocketIcon {...props} /> },
-  { id: 'bee', label: 'Bee', icon: (props) => <BeeIcon {...props} /> },
-  { id: 'magnet', label: 'Magnet', icon: (props) => <MagnetIcon {...props} /> },
-  { id: 'crown', label: 'Crown', icon: (props) => <CrownIcon {...props} /> },
-  { id: 'planet', label: 'Planet', icon: (props) => <PlanetIcon {...props} /> },
+  { id: 'cross', label: 'Cross', icon: CrossIcon },
+  { id: 'circle', label: 'Circle', icon: CircleIcon },
+  { id: 'star', label: 'Star', icon: StarIcon },
+  { id: 'bolt', label: 'Bolt', icon: BoltIcon },
+  { id: 'spiral', label: 'Spiral', icon: SpiralIcon },
+  { id: 'skull', label: 'Skull', icon: SkullIcon },
+  { id: 'danger', label: 'Danger', icon: DangerIcon },
+  { id: 'rocket', label: 'Rocket', icon: RocketIcon },
+  { id: 'bee', label: 'Bee', icon: BeeIcon },
+  { id: 'magnet', label: 'Magnet', icon: MagnetIcon },
+  { id: 'crown', label: 'Crown', icon: CrownIcon },
+  { id: 'planet', label: 'Planet', icon: PlanetIcon },
 ];
 
 type FormValues = {
@@ -67,8 +63,10 @@ type FormValues = {
 
 const steps = ['Grid Configuration', 'Player Setup', 'Player Details'];
 
-const CreateGameForm = () => {
-  const getStepSchema = (step: any): any => {
+export const CreateGameForm = () => {
+  const [activeStep, setActiveStep] = useState(0);
+
+  const getStepSchema = (step: number): any => {
     switch (step) {
       case 0:
         return gridSchema;
@@ -81,48 +79,31 @@ const CreateGameForm = () => {
     }
   };
 
-  const [activeStep, setActiveStep] = useState(0);
+  const { control, handleSubmit, watch, setValue, trigger } =
+    useForm<FormValues>({
+      defaultValues: {
+        gridSize: 3,
+        playerCount: 2,
+        playerNames: [],
+      },
+      resolver: yupResolver(getStepSchema(activeStep)),
+    });
 
-  const {
-    control,
-    handleSubmit,
-    watch,
-    setValue,
-    trigger,
-    reset,
-  } = useForm<FormValues>({
-    defaultValues: { gridSize: 3, playerCount: 2, playerNames: [] },
-    resolver: yupResolver(getStepSchema(activeStep)),
-  });
-
-  const { fields, update } = useFieldArray({
+  const { fields } = useFieldArray({
     control,
     name: 'playerNames',
   });
 
   const gridSize = watch('gridSize');
   const playerCount = watch('playerCount');
-  const playerNames = watch('playerNames');
+  // const playerNames = watch('playerNames');
 
   const handleNext = async () => {
-    // Reapply the schema before validation
-    const currentSchema = getStepSchema(activeStep);
-    reset(watch(), {
-      keepValues: true,
-      keepErrors: true,
-      keepDirty: true,
-      keepTouched: true,
-      keepIsSubmitted: false,
-      keepSubmitCount: false,
-      keepDefaultValues: true,
-      resolver: yupResolver(currentSchema),
-    } as any);
-
     const isValid = await trigger();
     if (!isValid) return;
 
     if (activeStep === 1) {
-      const players = Array.from({ length: watch('playerCount') }, (_, i) => ({
+      const players = Array.from({ length: playerCount }, (_, i) => ({
         name: `Player ${i + 1}`,
         iconId: '',
       }));
@@ -134,18 +115,7 @@ const CreateGameForm = () => {
 
   const handleBack = () => setActiveStep((prev) => prev - 1);
 
-  const onSubmit = () => {
-    // console.log('Game Configuration:', data);/
-  };
-
-  const updatePlayerName = (index: number, name: string) => {
-    update(index, { ...fields[index], name });
-  };
-
-  const updatePlayerIcon = (index: number, iconId: string) => {
-    update(index, { ...fields[index], iconId });
-  };
-
+  const onSubmit = () => {};
   const renderStepContent = (step: number) => {
     switch (step) {
       case 0:
@@ -176,22 +146,16 @@ const CreateGameForm = () => {
             <Typography variant="h6" gutterBottom>
               Select Number of Players
             </Typography>
-            <FormControl fullWidth>
-              <InputLabel>Players</InputLabel>
-              <Select
-                value={playerCount}
-                label="Players"
-                onChange={(e) =>
-                  setValue('playerCount', Number(e.target.value))
-                }
-              >
-                {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((count) => (
-                  <MenuItem key={count} value={count}>
-                    {count} Players
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <CustomFormSelect
+              name="playerCount"
+              control={control}
+              label="Players"
+              defaultValue={2}
+              options={Array.from({ length: 11 }, (_, i) => ({
+                label: `${i + 2} Players`,
+                value: i + 2,
+              }))}
+            />
           </>
         );
 
@@ -205,9 +169,17 @@ const CreateGameForm = () => {
               const SelectedIcon = GAME_ICONS.find(
                 (icon) => icon.id === field.iconId,
               )?.icon;
-              const usedIcons = playerNames
-                .filter((_, i) => i !== index)
-                .map((p) => p.iconId);
+
+              // const usedIcons = playerNames
+              //   .filter((_, i) => i !== index)
+              //   .map((p) => p.iconId);
+
+              // const iconOptions = GAME_ICONS.map((icon) => ({
+              //   label: icon.label,
+              //   value: icon.id,
+              //   disabled: usedIcons.includes(icon.id),
+              //   icon: icon.icon,
+              // }));
 
               return (
                 <Card key={field.id} variant="outlined" sx={{ mb: 2 }}>
@@ -217,56 +189,32 @@ const CreateGameForm = () => {
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                       <Avatar>{field.name.charAt(0)}</Avatar>
                       <CustomFormTextField
-                        name="playerNames"
+                        name={`playerNames.${index}.name`}
                         control={control}
                         label="Player Name"
-                        type="playerNames"
-                        margin="normal"
-                        onChange={(e) =>
-                          updatePlayerName(index, e.target.value)
-                        }
                       />
                     </Box>
 
-                    <FormControl fullWidth>
-                      <InputLabel>Icon</InputLabel>
-                      <Select
-                        value={field.iconId}
-                        label="Icon"
-                        onChange={(e) =>
-                          updatePlayerIcon(index, e.target.value)
-                        }
-                      >
-                        {GAME_ICONS.map((icon) => {
-                          const IconComp = icon.icon;
-                          const isUsed = usedIcons.includes(icon.id);
-
-                          return (
-                            <MenuItem
-                              key={icon.id}
-                              value={icon.id}
-                              disabled={isUsed}
-                            >
-                              <Box
-                                sx={{
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  gap: 1,
-                                  color: 'primary',
-                                }}
-                              >
-                                <IconComp fontSize="small" color="primary" />
-                                {icon.label}
-                              </Box>
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
+                    <CustomFormSelect
+                      name={`playerNames.${index}.iconId`}
+                      control={control}
+                      label="Icon"
+                      defaultValue=""
+                      options={GAME_ICONS.map((icon) => ({
+                        label: icon.label,
+                        value: icon.id,
+                        icon: icon.icon,
+                      }))}
+                    />
 
                     {SelectedIcon && (
                       <Box
-                        sx={{ mt: 1, display: 'flex', alignItems: 'center' }}
+                        sx={{
+                          mt: 1,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 1,
+                        }}
                       >
                         <Typography variant="caption">Preview:</Typography>
                         <SelectedIcon fontSize="large" color="primary" />
@@ -289,6 +237,7 @@ const CreateGameForm = () => {
       <Typography variant="h4" align="center" gutterBottom>
         Create New Game
       </Typography>
+
       <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 3 }}>
         {steps.map((label) => (
           <Step key={label}>
@@ -326,5 +275,3 @@ const CreateGameForm = () => {
     </Box>
   );
 };
-
-export { CreateGameForm };
