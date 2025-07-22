@@ -9,6 +9,7 @@ import { forgotPasswordSchema } from '@/schemas';
 import { CustomButton, CustomFormTextField } from '@/components';
 import { useForgotPassword } from '@/queries';
 import { ApiResponse } from '@/types';
+import Link from 'next/link';
 
 type ForgotPasswordInputs = {
   email: string;
@@ -85,7 +86,7 @@ export default function ForgotPasswordPage() {
         sx={{ mt: 3, color: '#b0b0b0' }}
       >
         Remembered your password?{' '}
-        <a
+        <Link
           href="login"
           style={{
             color: '#00ccff',
@@ -94,7 +95,7 @@ export default function ForgotPasswordPage() {
           }}
         >
           Go back to login
-        </a>
+        </Link>
       </Typography>
     </Box>
   );

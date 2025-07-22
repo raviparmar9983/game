@@ -1,6 +1,6 @@
 'use client';
 
-import { CreateGameForm, CustomButton, CustomModal } from '@/components';
+import { CreateRoomForm, CustomButton, CustomModal } from '@/components';
 import { useCallback, useState } from 'react';
 
 const GamePage = () => {
@@ -18,7 +18,7 @@ const GamePage = () => {
         animation="slide"
         anchor="right"
       >
-        <CreateGameForm />
+        <CreateRoomForm />
       </CustomModal>
     </>
   );
