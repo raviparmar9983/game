@@ -168,7 +168,7 @@ export default function RegisterPage() {
             align="center"
             sx={{ mt: 1, color: '#b0b0b0' }}
           >
-            Already have an account?{' '}
+            Already have an account?
             <Link
               href="login"
               style={{

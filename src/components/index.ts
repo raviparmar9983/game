@@ -7,3 +7,4 @@ export * from './shared/CustomSelect';
 
 //  game
 export * from './game/CreateGameForm';
+export * from './game/CreateRoom';

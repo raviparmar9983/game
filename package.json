@@ -23,6 +23,7 @@
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.57.0",
     "react-hot-toast": "^2.5.2",
+    "socket.io-client": "^4.8.1",
     "yup": "^1.6.1"
   },
   "devDependencies": {
