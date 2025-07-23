@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { QueryProvider } from '@/providers/QueryProvider';
 import { AnimatedBackground } from '@/components';
 import { ThemeRegistry } from './ThemeProvider';
+import { StoreProvider } from './StoreProvider';
 
 const Toaster = dynamic(
   () => import('react-hot-toast').then((mod) => mod.Toaster),
@@ -14,7 +15,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <>
       <ThemeRegistry>
         <QueryProvider>
-          <AnimatedBackground>{children}</AnimatedBackground>
+          <StoreProvider>
+            <AnimatedBackground>{children}</AnimatedBackground>
+          </StoreProvider>
         </QueryProvider>
       </ThemeRegistry>
       <Toaster
