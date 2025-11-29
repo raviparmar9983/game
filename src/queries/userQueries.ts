@@ -1,8 +1,8 @@
-import { getUserProfile } from '@/services';
-import { useQuery } from '@tanstack/react-query';
+import { getUserProfile } from "@/services";
+import { useQuery } from "@tanstack/react-query";
 
 export const useUserProfileQuery = () =>
   useQuery({
-    queryKey: [''],
+    queryKey: [""],
     queryFn: getUserProfile,
   });

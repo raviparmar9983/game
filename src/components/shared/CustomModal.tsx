@@ -1,21 +1,13 @@
-'use client';
+"use client";
 
-import React, { ReactNode, forwardRef, Ref, memo, useMemo } from 'react';
-import {
-  Dialog,
-  DialogProps,
-  Slide,
-  Fade,
-  Grow,
-  Box,
-  Breakpoint,
-} from '@mui/material';
-import { TransitionProps } from '@mui/material/transitions';
+import React, { ReactNode, forwardRef, Ref, memo, useMemo } from "react";
+import { Dialog, DialogProps, Slide, Fade, Grow, Box, Breakpoint } from "@mui/material";
+import { TransitionProps } from "@mui/material/transitions";
 
-type AnimationType = 'fade' | 'slide' | 'grow' | 'none';
-type Anchor = 'top' | 'bottom' | 'left' | 'right' | 'center';
+type AnimationType = "fade" | "slide" | "grow" | "none";
+type Anchor = "top" | "bottom" | "left" | "right" | "center";
 
-interface CustomModalProps extends Omit<DialogProps, 'TransitionComponent'> {
+interface CustomModalProps extends Omit<DialogProps, "TransitionComponent"> {
   open: boolean;
   onClose?: () => void;
   animation?: AnimationType;
@@ -26,24 +18,24 @@ interface CustomModalProps extends Omit<DialogProps, 'TransitionComponent'> {
 
 const getTransition = (animation: AnimationType) => {
   switch (animation) {
-    case 'slide':
+    case "slide":
       return forwardRef(function Transition(
         props: TransitionProps & { children: React.ReactElement },
-        ref: Ref<unknown>,
+        ref: Ref<unknown>
       ) {
         return <Slide direction="left" ref={ref} {...props} />;
       });
-    case 'fade':
+    case "fade":
       return forwardRef(function Transition(
         props: TransitionProps & { children: React.ReactElement },
-        ref: Ref<unknown>,
+        ref: Ref<unknown>
       ) {
         return <Fade ref={ref} {...props} />;
       });
-    case 'grow':
+    case "grow":
       return forwardRef(function Transition(
         props: TransitionProps & { children: React.ReactElement },
-        ref: Ref<unknown>,
+        ref: Ref<unknown>
       ) {
         return <Grow ref={ref} {...props} />;
       });
@@ -53,25 +45,17 @@ const getTransition = (animation: AnimationType) => {
 };
 
 const anchorStyleMap: Record<Anchor, React.CSSProperties> = {
-  top: { alignItems: 'flex-start', justifyContent: 'center' },
-  bottom: { alignItems: 'flex-end', justifyContent: 'center' },
-  left: { alignItems: 'center', justifyContent: 'flex-start' },
-  right: { alignItems: 'center', justifyContent: 'flex-end' },
-  center: { alignItems: 'center', justifyContent: 'center' },
+  top: { alignItems: "flex-start", justifyContent: "center" },
+  bottom: { alignItems: "flex-end", justifyContent: "center" },
+  left: { alignItems: "center", justifyContent: "flex-start" },
+  right: { alignItems: "center", justifyContent: "flex-end" },
+  center: { alignItems: "center", justifyContent: "center" },
 };
 
 const CustomModal = memo(
   forwardRef<HTMLDivElement, CustomModalProps>(function CustomModal(
-    {
-      open,
-      onClose,
-      animation = 'fade',
-      anchor = 'center',
-      size = 'md',
-      children,
-      ...rest
-    },
-    ref,
+    { open, onClose, animation = "fade", anchor = "center", size = "md", children, ...rest },
+    ref
   ) {
     const Transition = useMemo(() => getTransition(animation), [animation]);
 
@@ -94,14 +78,14 @@ const CustomModal = memo(
           sx: {
             borderRadius: 1,
             p: 2,
-            background: 'rgba(255, 255, 255, 0.08)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            background: "rgba(255, 255, 255, 0.08)",
+            backdropFilter: "blur(10px)",
+            border: "1px solid rgba(255, 255, 255, 0.1)",
           },
         }}
         sx={{
-          '& .MuiDialog-container': {
-            display: 'flex',
+          "& .MuiDialog-container": {
+            display: "flex",
             ...anchorStyleMap[anchor],
           },
         }}
@@ -110,7 +94,7 @@ const CustomModal = memo(
         <Box>{children}</Box>
       </Dialog>
     );
-  }),
+  })
 );
 
 export { CustomModal };

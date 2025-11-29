@@ -1,31 +1,30 @@
-'use client';
+"use client";
 
-import { Box, Typography, Grid, Button, LinearProgress } from '@mui/material';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { CustomFormSelect } from '../shared/CustomSelect';
-import { createRoomSchema } from '@/schemas';
-import { useCreateRoom } from '@/queries';
-import { useRouter } from 'next/navigation';
-import toast from 'react-hot-toast';
-import { ApiResponse, CreateRoomFormInputs } from '@/types';
-import { CustomButton } from '../shared/CustomButton';
+import { Box, Typography, Grid, Button, LinearProgress } from "@mui/material";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { CustomFormSelect } from "../shared/CustomSelect";
+import { createRoomSchema } from "@/schemas";
+import { useCreateRoom } from "@/queries";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { ApiResponse, CreateRoomFormInputs } from "@/types";
+import { CustomButton } from "../shared/CustomButton";
 
 export const CreateRoomForm = () => {
   const router = useRouter();
 
-  const { control, handleSubmit, watch, setValue } =
-    useForm<CreateRoomFormInputs>({
-      defaultValues: {
-        gridSize: 3,
-        playerCount: 2,
-      },
-      resolver: yupResolver(createRoomSchema),
-    });
+  const { control, handleSubmit, watch, setValue } = useForm<CreateRoomFormInputs>({
+    defaultValues: {
+      gridSize: 3,
+      playerCount: 2,
+    },
+    resolver: yupResolver(createRoomSchema),
+  });
 
   const { mutate, isPending } = useCreateRoom();
 
-  const gridSize = watch('gridSize');
+  const gridSize = watch("gridSize");
 
   const onSubmit = (data: CreateRoomFormInputs) => {
     createRoom(data);
@@ -45,7 +44,7 @@ export const CreateRoomForm = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 500, mx: 'auto', p: 3 }}>
+    <Box sx={{ maxWidth: 500, mx: "auto", p: 3 }}>
       <Typography variant="h4" align="center" gutterBottom>
         Create Game Room
       </Typography>
@@ -62,8 +61,8 @@ export const CreateRoomForm = () => {
             <Grid size={{ xs: 4, sm: 3 }} key={size}>
               <Button
                 fullWidth
-                variant={gridSize === size ? 'contained' : 'outlined'}
-                onClick={() => setValue('gridSize', size)}
+                variant={gridSize === size ? "contained" : "outlined"}
+                onClick={() => setValue("gridSize", size)}
               >
                 {size}×{size}
               </Button>
@@ -86,7 +85,7 @@ export const CreateRoomForm = () => {
           }))}
         />
 
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 4 }}>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 4 }}>
           <CustomButton type="submit" loading={isPending}>
             Create Room
           </CustomButton>

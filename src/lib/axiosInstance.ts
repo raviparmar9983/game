@@ -1,7 +1,7 @@
 // src/api/axios.ts
-import axios from 'axios';
-import { getCookie, deleteCookie } from 'cookies-next';
-import { environment } from './env';
+import axios from "axios";
+import { getCookie, deleteCookie } from "cookies-next";
+import { environment } from "./env";
 
 const api = axios.create({
   baseURL: environment.API_URL,
@@ -10,7 +10,7 @@ const api = axios.create({
 
 // Attach access token to every request
 api.interceptors.request.use((config) => {
-  const token = getCookie('accessToken');
+  const token = getCookie("accessToken");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -23,19 +23,19 @@ api.interceptors.response.use(
   (error) => {
     const status = error.response?.status;
     const message = new Error(
-      error.response?.data?.message ?? error.message ?? 'Something went wrong',
+      error.response?.data?.message ?? error.message ?? "Something went wrong"
     );
 
     if (status === 401) {
-      deleteCookie('accessToken');
-      deleteCookie('refreshToken');
-      if (typeof window !== 'undefined') {
-        window.location.href = '/auth/login'; // Add leading slash
+      deleteCookie("accessToken");
+      deleteCookie("refreshToken");
+      if (typeof window !== "undefined") {
+        window.location.href = "/auth/login"; // Add leading slash
       }
     }
 
     return Promise.reject(message);
-  },
+  }
 );
 
 export { api };

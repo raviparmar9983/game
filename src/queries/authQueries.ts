@@ -1,10 +1,5 @@
-import {
-  loginUser,
-  registerUser,
-  forgotPassword,
-  resetPassword,
-} from '@/services';
-import { useMutation } from '@tanstack/react-query';
+import { loginUser, registerUser, forgotPassword, resetPassword } from "@/services";
+import { useMutation } from "@tanstack/react-query";
 
 export const useLoginUser = () => {
   return useMutation({ mutationFn: loginUser });

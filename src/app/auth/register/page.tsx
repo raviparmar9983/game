@@ -1,18 +1,14 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, Typography } from '@mui/material';
-import toast from 'react-hot-toast';
-import { RegisterFormInputs, registerSchema } from '@/schemas';
-import Link from 'next/link';
-import {
-  CustomFormTextField,
-  CustomCheckbox,
-  CustomButton,
-} from '@/components';
-import { useRegisterUser } from '@/queries';
+import React from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Box, Button, Typography } from "@mui/material";
+import toast from "react-hot-toast";
+import { RegisterFormInputs, registerSchema } from "@/schemas";
+import Link from "next/link";
+import { CustomFormTextField, CustomCheckbox, CustomButton } from "@/components";
+import { useRegisterUser } from "@/queries";
 
 export default function RegisterPage() {
   const { mutate, isPending } = useRegisterUser();
@@ -20,12 +16,12 @@ export default function RegisterPage() {
   const { control, handleSubmit, reset } = useForm({
     resolver: yupResolver(registerSchema),
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      phoneNumber: '',
-      email: '',
-      hash: '',
-      confirmPassword: '',
+      firstName: "",
+      lastName: "",
+      phoneNumber: "",
+      email: "",
+      hash: "",
+      confirmPassword: "",
     },
   });
 
@@ -33,9 +29,7 @@ export default function RegisterPage() {
     const { ...userPayload } = data;
 
     if (userPayload.birthDate) {
-      userPayload.birthDate = new Date(
-        userPayload.birthDate,
-      ).toISOString() as any;
+      userPayload.birthDate = new Date(userPayload.birthDate).toISOString() as any;
     }
 
     mutate(userPayload as RegisterFormInputs, {
@@ -56,19 +50,19 @@ export default function RegisterPage() {
       {isRegistered ? (
         <Box
           sx={{
-            textAlign: 'center',
+            textAlign: "center",
             p: 4,
-            color: '#fff',
+            color: "#fff",
           }}
         >
           <Typography variant="h4">Verify Your Email ✉️</Typography>
-          <Typography sx={{ mb: 3, color: '#b0b0b0' }}>
-            We&apos;ve sent a verification link to your email. Please check your
-            inbox and confirm your email address to complete the registration.
+          <Typography sx={{ mb: 3, color: "#b0b0b0" }}>
+            We&apos;ve sent a verification link to your email. Please check your inbox and confirm
+            your email address to complete the registration.
           </Typography>
           <Button
             variant="outlined"
-            sx={{ mt: 2, borderColor: '#00ccff', color: '#00ccff' }}
+            sx={{ mt: 2, borderColor: "#00ccff", color: "#00ccff" }}
             onClick={() => setIsRegistered(false)}
           >
             Back to Sign Up
@@ -79,9 +73,9 @@ export default function RegisterPage() {
           component="form"
           sx={{
             maxWidth: 420,
-            backdropFilter: 'blur(12px)',
-            background: 'rgba(255, 255, 255, 0.05)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            backdropFilter: "blur(12px)",
+            background: "rgba(255, 255, 255, 0.05)",
+            border: "1px solid rgba(255, 255, 255, 0.1)",
             borderRadius: 1,
             p: 4,
           }}
@@ -92,10 +86,7 @@ export default function RegisterPage() {
             Create Account
           </Typography>
 
-          <Typography
-            align="center"
-            sx={{ mb: 3, color: '#b0b0b0', fontSize: '0.95rem' }}
-          >
+          <Typography align="center" sx={{ mb: 3, color: "#b0b0b0", fontSize: "0.95rem" }}>
             Join the future. Fast, secure, and stylish sign-up.
           </Typography>
 
@@ -148,32 +139,19 @@ export default function RegisterPage() {
         InputLabelProps={{ shrink: true }}
       /> */}
 
-          <CustomCheckbox
-            name="agreeTerms"
-            control={control}
-            label="I agree to the terms"
-          />
+          <CustomCheckbox name="agreeTerms" control={control} label="I agree to the terms" />
 
-          <CustomButton
-            fullWidth
-            type="submit"
-            variant="contained"
-            loading={isPending}
-          >
+          <CustomButton fullWidth type="submit" variant="contained" loading={isPending}>
             Register
           </CustomButton>
 
-          <Typography
-            variant="body2"
-            align="center"
-            sx={{ mt: 1, color: '#b0b0b0' }}
-          >
+          <Typography variant="body2" align="center" sx={{ mt: 1, color: "#b0b0b0" }}>
             Already have an account?
             <Link
               href="login"
               style={{
-                color: '#00ff88',
-                textDecoration: 'underline',
+                color: "#00ff88",
+                textDecoration: "underline",
                 fontWeight: 500,
               }}
             >

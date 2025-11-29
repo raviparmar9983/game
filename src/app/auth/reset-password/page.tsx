@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import React, { Suspense, useEffect } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, CircularProgress, Typography } from '@mui/material';
-import toast from 'react-hot-toast';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { resetPasswordSchema } from '@/schemas';
-import { CustomButton, CustomFormTextField } from '@/components';
-import { useResetPassword } from '@/queries';
-import { ApiResponse } from '@/types';
+import React, { Suspense, useEffect } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Box, CircularProgress, Typography } from "@mui/material";
+import toast from "react-hot-toast";
+import { useRouter, useSearchParams } from "next/navigation";
+import { resetPasswordSchema } from "@/schemas";
+import { CustomButton, CustomFormTextField } from "@/components";
+import { useResetPassword } from "@/queries";
+import { ApiResponse } from "@/types";
 
 type ResetPasswordInputs = {
   hash: string;
@@ -20,26 +20,26 @@ function ResetPasswordPage() {
   const { mutate, isPending } = useResetPassword();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams.get('token');
+  const token = searchParams.get("token");
 
   const { control, handleSubmit, reset } = useForm<ResetPasswordInputs>({
     resolver: yupResolver(resetPasswordSchema),
     defaultValues: {
-      hash: '',
-      confirmPassword: '',
+      hash: "",
+      confirmPassword: "",
     },
   });
 
   useEffect(() => {
     if (!token) {
-      toast.error('Reset token is missing or invalid.');
-      router.replace('login');
+      toast.error("Reset token is missing or invalid.");
+      router.replace("login");
     }
   }, [token, router]);
 
   const onSubmit: SubmitHandler<ResetPasswordInputs> = (formData) => {
     if (!token) {
-      toast.error('Missing token. Cannot reset password.');
+      toast.error("Missing token. Cannot reset password.");
       return;
     }
 
@@ -50,19 +50,18 @@ function ResetPasswordPage() {
       },
       {
         onSuccess: (res: ApiResponse) => {
-          toast.success(res?.message || 'Password reset successful!');
+          toast.success(res?.message || "Password reset successful!");
           reset();
 
           setTimeout(() => {
-            router.push('login');
+            router.push("login");
           }, 2000);
         },
         onError: (error: Error) => {
-          const errorMessage =
-            error?.message || 'Failed to reset password. Please try again.';
+          const errorMessage = error?.message || "Failed to reset password. Please try again.";
           toast.error(errorMessage);
         },
-      },
+      }
     );
   };
 
@@ -73,9 +72,9 @@ function ResetPasswordPage() {
       noValidate
       sx={{
         maxWidth: 420,
-        backdropFilter: 'blur(12px)',
-        background: 'rgba(255, 255, 255, 0.05)',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
+        backdropFilter: "blur(12px)",
+        background: "rgba(255, 255, 255, 0.05)",
+        border: "1px solid rgba(255, 255, 255, 0.1)",
         borderRadius: 1,
         p: 4,
       }}
@@ -84,10 +83,7 @@ function ResetPasswordPage() {
         Reset Password
       </Typography>
 
-      <Typography
-        align="center"
-        sx={{ mb: 3, color: '#b0b0b0', fontSize: '0.95rem' }}
-      >
+      <Typography align="center" sx={{ mb: 3, color: "#b0b0b0", fontSize: "0.95rem" }}>
         Enter your new password and confirm it to reset access.
       </Typography>
 
@@ -107,12 +103,7 @@ function ResetPasswordPage() {
         margin="normal"
       />
 
-      <CustomButton
-        fullWidth
-        type="submit"
-        variant="contained"
-        loading={isPending}
-      >
+      <CustomButton fullWidth type="submit" variant="contained" loading={isPending}>
         Reset Password
       </CustomButton>
     </Box>

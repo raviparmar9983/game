@@ -23,11 +23,7 @@ export function CustomCheckbox({ name, control, label }: CustomCheckboxProps) {
   return (
     <FormControlLabel
       control={
-        <Checkbox
-          inputRef={ref}
-          checked={!!value}
-          onChange={(e) => onChange(e.target.checked)}
-        />
+        <Checkbox inputRef={ref} checked={!!value} onChange={(e) => onChange(e.target.checked)} />
       }
       label={label}
     />

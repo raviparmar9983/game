@@ -1,5 +1,5 @@
-import { SvgIcon, SvgIconProps } from '@mui/material';
-import React from 'react';
+import { SvgIcon, SvgIconProps } from "@mui/material";
+import React from "react";
 
 export const CrossIcon = (props: SvgIconProps) => (
   <SvgIcon {...props} viewBox="0 0 24 24">

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useState } from "react";
 import {
   Box,
   Stepper,
@@ -13,9 +13,9 @@ import {
   CardContent,
   Button,
   LinearProgress,
-} from '@mui/material';
-import { useForm, useFieldArray } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+} from "@mui/material";
+import { useForm, useFieldArray } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   BeeIcon,
   BoltIcon,
@@ -29,10 +29,10 @@ import {
   SkullIcon,
   SpiralIcon,
   StarIcon,
-} from '@/icons';
-import { gridSchema, playerCountSchema, playerDetailsSchema } from '@/schemas';
-import { CustomFormTextField } from '../shared/CustomFormTextField';
-import { CustomFormSelect } from '../shared/CustomSelect';
+} from "@/icons";
+import { gridSchema, playerCountSchema, playerDetailsSchema } from "@/schemas";
+import { CustomFormTextField } from "../shared/CustomFormTextField";
+import { CustomFormSelect } from "../shared/CustomSelect";
 
 export type GameIconItem = {
   id: string;
@@ -41,18 +41,18 @@ export type GameIconItem = {
 };
 
 export const GAME_ICONS: GameIconItem[] = [
-  { id: 'cross', label: 'Cross', icon: CrossIcon },
-  { id: 'circle', label: 'Circle', icon: CircleIcon },
-  { id: 'star', label: 'Star', icon: StarIcon },
-  { id: 'bolt', label: 'Bolt', icon: BoltIcon },
-  { id: 'spiral', label: 'Spiral', icon: SpiralIcon },
-  { id: 'skull', label: 'Skull', icon: SkullIcon },
-  { id: 'danger', label: 'Danger', icon: DangerIcon },
-  { id: 'rocket', label: 'Rocket', icon: RocketIcon },
-  { id: 'bee', label: 'Bee', icon: BeeIcon },
-  { id: 'magnet', label: 'Magnet', icon: MagnetIcon },
-  { id: 'crown', label: 'Crown', icon: CrownIcon },
-  { id: 'planet', label: 'Planet', icon: PlanetIcon },
+  { id: "cross", label: "Cross", icon: CrossIcon },
+  { id: "circle", label: "Circle", icon: CircleIcon },
+  { id: "star", label: "Star", icon: StarIcon },
+  { id: "bolt", label: "Bolt", icon: BoltIcon },
+  { id: "spiral", label: "Spiral", icon: SpiralIcon },
+  { id: "skull", label: "Skull", icon: SkullIcon },
+  { id: "danger", label: "Danger", icon: DangerIcon },
+  { id: "rocket", label: "Rocket", icon: RocketIcon },
+  { id: "bee", label: "Bee", icon: BeeIcon },
+  { id: "magnet", label: "Magnet", icon: MagnetIcon },
+  { id: "crown", label: "Crown", icon: CrownIcon },
+  { id: "planet", label: "Planet", icon: PlanetIcon },
 ];
 
 type FormValues = {
@@ -61,7 +61,7 @@ type FormValues = {
   playerNames: { name: string; iconId: string }[];
 };
 
-const steps = ['Grid Configuration', 'Player Setup', 'Player Details'];
+const steps = ["Grid Configuration", "Player Setup", "Player Details"];
 
 export const CreateGameForm = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -79,23 +79,22 @@ export const CreateGameForm = () => {
     }
   };
 
-  const { control, handleSubmit, watch, setValue, trigger } =
-    useForm<FormValues>({
-      defaultValues: {
-        gridSize: 3,
-        playerCount: 2,
-        playerNames: [],
-      },
-      resolver: yupResolver(getStepSchema(activeStep)),
-    });
+  const { control, handleSubmit, watch, setValue, trigger } = useForm<FormValues>({
+    defaultValues: {
+      gridSize: 3,
+      playerCount: 2,
+      playerNames: [],
+    },
+    resolver: yupResolver(getStepSchema(activeStep)),
+  });
 
   const { fields } = useFieldArray({
     control,
-    name: 'playerNames',
+    name: "playerNames",
   });
 
-  const gridSize = watch('gridSize');
-  const playerCount = watch('playerCount');
+  const gridSize = watch("gridSize");
+  const playerCount = watch("playerCount");
   // const playerNames = watch('playerNames');
 
   const handleNext = async () => {
@@ -105,9 +104,9 @@ export const CreateGameForm = () => {
     if (activeStep === 1) {
       const players = Array.from({ length: playerCount }, (_, i) => ({
         name: `Player ${i + 1}`,
-        iconId: '',
+        iconId: "",
       }));
-      setValue('playerNames', players);
+      setValue("playerNames", players);
     }
 
     setActiveStep((prev) => prev + 1);
@@ -129,8 +128,8 @@ export const CreateGameForm = () => {
                 <Grid size={3} key={size}>
                   <Button
                     fullWidth
-                    variant={gridSize === size ? 'contained' : 'outlined'}
-                    onClick={() => setValue('gridSize', size)}
+                    variant={gridSize === size ? "contained" : "outlined"}
+                    onClick={() => setValue("gridSize", size)}
                   >
                     {size}×{size}
                   </Button>
@@ -166,9 +165,7 @@ export const CreateGameForm = () => {
               Customize Players
             </Typography>
             {fields.map((field, index) => {
-              const SelectedIcon = GAME_ICONS.find(
-                (icon) => icon.id === field.iconId,
-              )?.icon;
+              const SelectedIcon = GAME_ICONS.find((icon) => icon.id === field.iconId)?.icon;
 
               // const usedIcons = playerNames
               //   .filter((_, i) => i !== index)
@@ -183,10 +180,8 @@ export const CreateGameForm = () => {
 
               return (
                 <Card key={field.id} variant="outlined" sx={{ mb: 2 }}>
-                  <CardContent
-                    sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
-                  >
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <CardContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                       <Avatar>{field.name.charAt(0)}</Avatar>
                       <CustomFormTextField
                         name={`playerNames.${index}.name`}
@@ -211,8 +206,8 @@ export const CreateGameForm = () => {
                       <Box
                         sx={{
                           mt: 1,
-                          display: 'flex',
-                          alignItems: 'center',
+                          display: "flex",
+                          alignItems: "center",
                           gap: 1,
                         }}
                       >
@@ -233,7 +228,7 @@ export const CreateGameForm = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 600, mx: 'auto', p: 3 }}>
+    <Box sx={{ maxWidth: 600, mx: "auto", p: 3 }}>
       <Typography variant="h4" align="center" gutterBottom>
         Create New Game
       </Typography>
@@ -255,7 +250,7 @@ export const CreateGameForm = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         {renderStepContent(activeStep)}
 
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
           {activeStep > 0 && (
             <Button variant="outlined" onClick={handleBack}>
               Back

@@ -1,4 +1,4 @@
-import React, { forwardRef, memo } from 'react';
+import React, { forwardRef, memo } from "react";
 import {
   FormControl,
   InputLabel,
@@ -6,14 +6,8 @@ import {
   Select,
   SelectProps,
   FormHelperText,
-} from '@mui/material';
-import {
-  useController,
-  useFormContext,
-  FieldValues,
-  Path,
-  PathValue,
-} from 'react-hook-form';
+} from "@mui/material";
+import { useController, useFormContext, FieldValues, Path, PathValue } from "react-hook-form";
 
 export type Option = {
   label: string;
@@ -21,9 +15,7 @@ export type Option = {
   icon?: React.ElementType<any>;
 };
 
-export type CustomFormSelectProps<
-  TFieldValues extends FieldValues = FieldValues,
-> = {
+export type CustomFormSelectProps<TFieldValues extends FieldValues = FieldValues> = {
   name: Path<TFieldValues>;
   control?: any;
   defaultValue?: PathValue<TFieldValues, Path<TFieldValues>>;
@@ -31,7 +23,7 @@ export type CustomFormSelectProps<
   id?: string;
   errorMessage?: string;
   options: Option[];
-} & Omit<SelectProps, 'name' | 'defaultValue' | 'ref' | 'label'>;
+} & Omit<SelectProps, "name" | "defaultValue" | "ref" | "label">;
 
 const CustomFormSelectBase = forwardRef(function CustomFormSelect<
   TFieldValues extends FieldValues = FieldValues,
@@ -46,7 +38,7 @@ const CustomFormSelectBase = forwardRef(function CustomFormSelect<
     options,
     ...selectProps
   }: CustomFormSelectProps<TFieldValues>,
-  ref: React.Ref<HTMLInputElement>,
+  ref: React.Ref<HTMLInputElement>
 ) {
   const methods = useFormContext<TFieldValues>();
   const resolvedControl = control || methods.control;
@@ -71,11 +63,11 @@ const CustomFormSelectBase = forwardRef(function CustomFormSelect<
         label={label}
         renderValue={(selected) => {
           const selectedOption = options.find((opt) => opt.value === selected);
-          if (!selectedOption) return '';
+          if (!selectedOption) return "";
 
           const Icon = selectedOption.icon;
           return (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               {Icon && <Icon fontSize="small" />}
               {selectedOption.label}
             </div>
@@ -86,7 +78,7 @@ const CustomFormSelectBase = forwardRef(function CustomFormSelect<
       >
         {options.map(({ label, value, icon: Icon }) => (
           <MenuItem key={value} value={value}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               {Icon && <Icon fontSize="small" />}
               {label}
             </div>
@@ -98,6 +90,6 @@ const CustomFormSelectBase = forwardRef(function CustomFormSelect<
   );
 });
 
-CustomFormSelectBase.displayName = 'CustomFormSelect';
+CustomFormSelectBase.displayName = "CustomFormSelect";
 
 export const CustomFormSelect = memo(CustomFormSelectBase);

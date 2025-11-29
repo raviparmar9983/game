@@ -1,7 +1,17 @@
-import { api } from '@/lib';
-import { CreateRoomFormInputs } from '@/types';
+import { api } from "@/lib";
+import { CreateRoomFormInputs } from "@/types";
 
 export const createRoom = async (data: CreateRoomFormInputs) => {
-  const response = await api.post('game', data);
+  const response = await api.post("game", data);
+  return response.data;
+};
+
+export const getGameById = async (gameId: string) => {
+  const response = await api.get(`/game/${gameId}`);
+  return response.data; // contains {status, message, data}
+};
+
+export const joinGameRoom = async (code: string) => {
+  const response = await api.post(`game/join/${code}`);
   return response.data;
 };

@@ -1,2 +1,2 @@
-export * from './authSchema';
-export * from './gameSchema';
+export * from "./authSchema";
+export * from "./gameSchema";
