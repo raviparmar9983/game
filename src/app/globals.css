@@ -59,3 +59,55 @@ a {
     transform: rotate(360deg);
   }
 }
+.game-board {
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 1 / 1;
+
+  display: grid;
+  place-items: center;
+
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.cell {
+  position: relative;
+  background: rgba(0, 0, 0, 0.55);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 2.2rem;
+  cursor: pointer;
+
+  /* theme-friendly borders */
+  border-right: 2px solid rgba(255, 255, 255, 0.35);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.35);
+}
+
+/* remove last column border */
+.cell:nth-child(3n) {
+  border-right: none;
+}
+
+/* remove bottom row border */
+.cell:nth-last-child(-n + 3) {
+  border-bottom: none;
+}
+
+.icon {
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* hover icon preview */
+.hover-icon {
+  position: absolute;
+  opacity: 0.25;
+  font-size: 2rem;
+  pointer-events: none;
+}

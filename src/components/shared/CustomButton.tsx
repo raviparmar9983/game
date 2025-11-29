@@ -1,6 +1,6 @@
-import React, { forwardRef } from 'react';
-import { Button, ButtonProps, CircularProgress } from '@mui/material';
-import { styled } from '@mui/system';
+import { memo, forwardRef } from "react";
+import { Button, ButtonProps, CircularProgress } from "@mui/material";
+import { styled } from "@mui/system";
 
 // Extend MUI's ButtonProps with custom prop
 interface CustomButtonProps extends ButtonProps {
@@ -10,12 +10,12 @@ interface CustomButtonProps extends ButtonProps {
 // Custom styled MUI button
 const StyledButton = styled(Button)(() => ({
   borderRadius: 12,
-  textTransform: 'none',
+  textTransform: "none",
   fontWeight: 600,
-  padding: '8px 16px',
-  transition: 'all 0.3s ease',
-  '&:hover': {
-    transform: 'translateY(-1px)',
+  padding: "8px 16px",
+  transition: "all 0.3s ease",
+  "&:hover": {
+    transform: "translateY(-1px)",
     // boxShadow: theme.shadows[3],
   },
 }));
@@ -25,9 +25,9 @@ const CustomButtonBase = forwardRef<HTMLButtonElement, CustomButtonProps>(
   (
     {
       children,
-      variant = 'contained',
-      color = 'primary',
-      size = 'medium',
+      variant = "contained",
+      color = "primary",
+      size = "medium",
       startIcon,
       endIcon,
       fullWidth = false,
@@ -37,7 +37,7 @@ const CustomButtonBase = forwardRef<HTMLButtonElement, CustomButtonProps>(
       sx,
       ...rest
     },
-    ref,
+    ref
   ) => {
     return (
       <StyledButton
@@ -56,13 +56,13 @@ const CustomButtonBase = forwardRef<HTMLButtonElement, CustomButtonProps>(
         {loading ? <CircularProgress size={24} color="inherit" /> : children}
       </StyledButton>
     );
-  },
+  }
 );
 
 // Optional display name for better debugging
-CustomButtonBase.displayName = 'CustomButton';
+CustomButtonBase.displayName = "CustomButton";
 
 // Export memoized version for performance
-const CustomButton = React.memo(CustomButtonBase);
+const CustomButton = memo(CustomButtonBase);
 
-export default CustomButton;
+export { CustomButton };

@@ -1,15 +1,15 @@
-'use client';
-import { ReactNode } from 'react';
-import { Box, Container } from '@mui/material';
+"use client";
+import { ReactNode } from "react";
+import { Box, Container } from "@mui/material";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
     <Box
       sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         p: 2,
       }}
     >
