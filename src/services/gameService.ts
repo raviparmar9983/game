@@ -15,3 +15,9 @@ export const joinGameRoom = async (code: string) => {
   const response = await api.post(`game/join/${code}`);
   return response.data;
 };
+
+export const gameResult = async (gameId: string) => {
+  const response = await api.get(`game/${gameId}/result`)
+  return response.data
+
+}

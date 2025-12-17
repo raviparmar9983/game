@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 import { Box, Typography, Card, Grid } from "@mui/material";
 import { JoinRoomForm } from "@/components/game/JoinRoom";
-import { GameIcon, ProfileIcon } from "@/icons/icons";
+import { GameIcon } from "@/icons/icons";
 
 const DashBoardPage = () => {
   const [open, setOpen] = useState(false);
@@ -112,11 +112,7 @@ const DashBoardPage = () => {
               label: "Join Room",
               icon: <GameIcon fontSize="small" />,
               action: handleJoinRoomOpen,
-            },
-            {
-              label: "Profile",
-              icon: <ProfileIcon fontSize="small" />,
-              route: "/profile",
+              route: null,
             },
           ].map((b, i) => (
             <Grid size={{ xs: 12 }} key={i}>

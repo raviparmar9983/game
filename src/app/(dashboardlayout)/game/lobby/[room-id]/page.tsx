@@ -10,6 +10,7 @@ import { useSocket } from "@/context";
 import { useRouter } from "next/navigation";
 import { CustomeCodeChip } from "@/components/shared/CustomChip";
 import { useGame } from "@/queries";
+import toast from "react-hot-toast";
 // import toast from "react-hot-toast";
 
 interface Player {
@@ -88,6 +89,42 @@ const GameLobbyPage = () => {
       socket.off("playerUpdated", onPlayerUpdated);
     };
   }, [socket, currentUser._id]);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    const onSocketError = (data: { message: string }) => {
+      const msg = data?.message || "Something went wrong";
+
+      toast.error(msg);
+      setIsLoading(false);
+
+      // ✅ ICON SELECTION & GAME STATE BASED REDIRECTION
+      if (msg.includes("Game already started") || msg.includes("icon locked")) {
+        // Game started while user was selecting icon
+        router.push(`/game/play/${gameId}`);
+        return;
+      } else if (msg.includes("Game not found") || msg.includes("Not allowed")) {
+        // Kicked out / wrong user
+        router.push("/");
+        return;
+      } else if (msg.includes("Icon already taken")) {
+        // ✅ NO REDIRECT → Just allow re-selection
+        return;
+      }
+
+      // ✅ Fallback safety
+      else {
+        router.push("/");
+      }
+    };
+
+    socket.on("ERROR", onSocketError);
+
+    return () => {
+      socket.off("ERROR", onSocketError);
+    };
+  }, [socket, gameId, router]);
 
   useEffect(() => {
     const me = players.find((p) => p._id === currentUser._id);
