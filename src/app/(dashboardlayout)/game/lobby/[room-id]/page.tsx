@@ -15,8 +15,7 @@ import toast from "react-hot-toast";
 
 interface Player {
   _id: string;
-  firstName: string;
-  lastName: string;
+  userName: string;
   email?: string;
   isConnected?: boolean;
   isReady?: boolean;
@@ -108,8 +107,10 @@ const GameLobbyPage = () => {
         // Kicked out / wrong user
         router.push("/");
         return;
-      } else if (msg.includes("Icon already taken")) {
-        // ✅ NO REDIRECT → Just allow re-selection
+      } else if (
+        msg.includes("Icon already taken") ||
+        msg.includes("All players must select icon")
+      ) {
         return;
       }
 
@@ -168,9 +169,7 @@ const GameLobbyPage = () => {
   if (isLoading || gameLoading) return <TicTacToeBackdropLoader />;
 
   const displayName = (p: Player) => {
-    const first = p.firstName || "";
-    const lastInitial = p.lastName ? ` ${p.lastName?.[0]}.` : "";
-    return `${first}${lastInitial}`;
+    return p.userName;
   };
 
   return (
@@ -257,7 +256,7 @@ const GameLobbyPage = () => {
               >
                 {/* Left: Avatar & Info */}
                 <Box display="flex" alignItems="center" gap={2}>
-                  <Avatar>{player.firstName?.[0] || "?"}</Avatar>
+                  <Avatar>{player.userName?.[0] || "?"}</Avatar>
                   <Box>
                     <Typography variant="body1" fontWeight={600}>
                       {displayName(player)}

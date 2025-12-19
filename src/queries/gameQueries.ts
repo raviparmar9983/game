@@ -17,11 +17,10 @@ export const useJoinGameRoom = () => {
   return useMutation({ mutationFn: joinGameRoom });
 };
 
-
 export const useGameResult = (gameId: string) => {
   return useQuery({
     queryKey: ["gameResult", gameId],
     queryFn: () => gameResult(gameId),
-    enabled: !!gameId
-  })
-}
+    enabled: !!gameId,
+  });
+};

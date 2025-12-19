@@ -16,9 +16,7 @@ export default function RegisterPage() {
   const { control, handleSubmit, reset } = useForm({
     resolver: yupResolver(registerSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
+      userName: "",
       email: "",
       hash: "",
       confirmPassword: "",
@@ -91,22 +89,9 @@ export default function RegisterPage() {
           </Typography>
 
           <CustomFormTextField
-            name="firstName"
+            name="userName"
             control={control}
-            label="First Name"
-            margin="normal"
-          />
-          <CustomFormTextField
-            name="lastName"
-            control={control}
-            label="Last Name"
-            margin="normal"
-          />
-          <CustomFormTextField
-            name="phoneNumber"
-            control={control}
-            label="Phone Number"
-            type="tel"
+            label="User Name"
             margin="normal"
           />
           <CustomFormTextField

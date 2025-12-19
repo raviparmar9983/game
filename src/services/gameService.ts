@@ -17,7 +17,6 @@ export const joinGameRoom = async (code: string) => {
 };
 
 export const gameResult = async (gameId: string) => {
-  const response = await api.get(`game/${gameId}/result`)
-  return response.data
-
-}
+  const response = await api.get(`game/${gameId}/result`);
+  return response.data;
+};

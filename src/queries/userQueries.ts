@@ -5,4 +5,5 @@ export const useUserProfileQuery = () =>
   useQuery({
     queryKey: [""],
     queryFn: getUserProfile,
+    staleTime: 3000,
   });

@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { Box, Typography, Card, Grid } from "@mui/material";
 import { JoinRoomForm } from "@/components/game/JoinRoom";
 import { GameIcon } from "@/icons/icons";
+import GameNavbar from "@/components/shared/NavBar";
 
 const DashBoardPage = () => {
   const [open, setOpen] = useState(false);
@@ -28,136 +29,138 @@ const DashBoardPage = () => {
     if (user && !isLoading) dispatch(setUser(user.data));
   }, [user, isLoading]);
 
-  if (isLoading) return <TicTacToeBackdropLoader />;
-
+  if (isLoading || !user) return <TicTacToeBackdropLoader />;
   return (
-    <Box
-      sx={{
-        px: 2,
-        py: 6,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
+    <>
+      <GameNavbar userName={user?.data?.userName} coins={user?.data?.coins} />
       <Box
         sx={{
-          width: 280,
-          height: 280,
-          position: "absolute",
-          top: 60,
-          right: 50,
-          background: "rgba(0,150,255,0.18)",
-          filter: "blur(140px)",
-          borderRadius: "50%",
-        }}
-      />
-      <Box
-        sx={{
-          width: 260,
-          height: 260,
-          position: "absolute",
-          bottom: 60,
-          left: 50,
-          background: "rgba(255,0,120,0.18)",
-          filter: "blur(150px)",
-          borderRadius: "50%",
-        }}
-      />
-
-      <Card
-        sx={{
-          width: "100%",
-          maxWidth: 620,
-          p: 5,
-          borderRadius: 4,
-          backdropFilter: "blur(10px)",
-          border: "1px solid rgba(255,255,255,0.35)",
-          boxShadow: "0 4px 35px rgba(0,0,0,0.10), 0 0 25px rgba(0,150,255,0.15)",
-          animation: "floatUp 6s ease-in-out infinite",
+          px: 2,
+          py: 6,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
-        <Typography variant="h4" fontWeight={800} textAlign="center" sx={{ color: "#333" }}>
-          Welcome,{" "}
-          <Box component="span" sx={{ color: "#1976d2" }}>
-            {user?.firstName}
-          </Box>
-        </Typography>
-
-        <Typography
-          textAlign="center"
+        <Box
           sx={{
-            color: "grey.700",
-            mt: 1,
-            mb: 4,
-            fontSize: "1.1rem",
+            width: 280,
+            height: 280,
+            position: "absolute",
+            top: 60,
+            right: 50,
+            background: "rgba(0,150,255,0.18)",
+            filter: "blur(140px)",
+            borderRadius: "50%",
+          }}
+        />
+        <Box
+          sx={{
+            width: 260,
+            height: 260,
+            position: "absolute",
+            bottom: 60,
+            left: 50,
+            background: "rgba(255,0,120,0.18)",
+            filter: "blur(150px)",
+            borderRadius: "50%",
+          }}
+        />
+
+        <Card
+          sx={{
+            width: "100%",
+            maxWidth: 620,
+            p: 5,
+            borderRadius: 4,
+            backdropFilter: "blur(10px)",
+            border: "1px solid rgba(255,255,255,0.35)",
+            boxShadow: "0 4px 35px rgba(0,0,0,0.10), 0 0 25px rgba(0,150,255,0.15)",
+            animation: "floatUp 6s ease-in-out infinite",
           }}
         >
-          Ready to create your next game room?
-        </Typography>
+          <Typography variant="h4" fontWeight={800} textAlign="center" sx={{ color: "#333" }}>
+            Welcome,{" "}
+            <Box component="span" sx={{ color: "#1976d2" }}>
+              {user?.userName}
+            </Box>
+          </Typography>
 
-        {/* Main CTA */}
-        <Box textAlign="center">
-          <CustomButton onClick={handleOpen} size="large" color="primary" fullWidth>
-            + Create Game Room
-          </CustomButton>
-        </Box>
+          <Typography
+            textAlign="center"
+            sx={{
+              color: "grey.700",
+              mt: 1,
+              mb: 4,
+              fontSize: "1.1rem",
+            }}
+          >
+            Ready to create your next game room?
+          </Typography>
 
-        {/* Options */}
-        <Grid container spacing={2} mt={5}>
-          {[
-            {
-              label: "Join Room",
-              icon: <GameIcon fontSize="small" />,
-              action: handleJoinRoomOpen,
-              route: null,
-            },
-          ].map((b, i) => (
-            <Grid size={{ xs: 12 }} key={i}>
-              <CustomButton
-                fullWidth
-                variant="outlined"
-                color="secondary"
-                onClick={() => {
-                  if (b.action) b.action();
-                  else if (b.route) router.push(b.route);
-                }}
-              >
-                {b.icon}
-                {b.label}
-              </CustomButton>
-            </Grid>
-          ))}
-        </Grid>
-      </Card>
+          {/* Main CTA */}
+          <Box textAlign="center">
+            <CustomButton onClick={handleOpen} size="large" color="primary" fullWidth>
+              + Create Game Room
+            </CustomButton>
+          </Box>
 
-      {/* Modal */}
-      <CustomModal open={open} onClose={handleClose} animation="slide" anchor="right">
-        <CreateRoomForm />
-      </CustomModal>
+          {/* Options */}
+          <Grid container spacing={2} mt={5}>
+            {[
+              {
+                label: "Join Room",
+                icon: <GameIcon fontSize="small" />,
+                action: handleJoinRoomOpen,
+                route: null,
+              },
+            ].map((b, i) => (
+              <Grid size={{ xs: 12 }} key={i}>
+                <CustomButton
+                  fullWidth
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => {
+                    if (b.action) b.action();
+                    else if (b.route) router.push(b.route);
+                  }}
+                >
+                  {b.icon}
+                  {b.label}
+                </CustomButton>
+              </Grid>
+            ))}
+          </Grid>
+        </Card>
 
-      <CustomModal
-        open={openJoinRoom}
-        onClose={handleJoinRoomClose}
-        animation="slide"
-        anchor="right"
-      >
-        <JoinRoomForm />
-      </CustomModal>
+        {/* Modal */}
+        <CustomModal open={open} onClose={handleClose} animation="slide" anchor="right">
+          <CreateRoomForm />
+        </CustomModal>
 
-      {/* Float Animation */}
-      <style>
-        {`
+        <CustomModal
+          open={openJoinRoom}
+          onClose={handleJoinRoomClose}
+          animation="slide"
+          anchor="right"
+        >
+          <JoinRoomForm />
+        </CustomModal>
+
+        {/* Float Animation */}
+        <style>
+          {`
           @keyframes floatUp {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
           }
         `}
-      </style>
-    </Box>
+        </style>
+      </Box>
+    </>
   );
 };
 
