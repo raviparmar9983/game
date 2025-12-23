@@ -7,17 +7,20 @@ import TicTacToeBackdropLoader from "@/components/shared/Loader";
 import { useAppDistpatch } from "@/lib/hooks";
 import { setUser } from "@/lib/reducers/userReducer";
 import { useRouter } from "next/navigation";
-
 import { Box, Typography, Card, Grid } from "@mui/material";
 import { JoinRoomForm } from "@/components/game/JoinRoom";
 import { GameIcon } from "@/icons/icons";
 import GameNavbar from "@/components/shared/NavBar";
+import { DailyRewardModal } from "@/components/game/DailyReward";
 
 const DashBoardPage = () => {
   const [open, setOpen] = useState(false);
   const [openJoinRoom, setJoinRoomOpen] = useState(false);
+  const [dailyJoinRoom, setDailyRewardOpen] = useState(false);
   const handleJoinRoomOpen = useCallback(() => setJoinRoomOpen(true), []);
   const handleJoinRoomClose = useCallback(() => setJoinRoomOpen(false), []);
+  const handleDailyJoinOpen = useCallback(() => setDailyRewardOpen(true), []);
+  const handleDailyJoinClose = useCallback(() => setDailyRewardOpen(false), []);
   const handleOpen = useCallback(() => setOpen(true), []);
   const handleClose = useCallback(() => setOpen(false), []);
   const router = useRouter();
@@ -29,7 +32,13 @@ const DashBoardPage = () => {
     if (user && !isLoading) dispatch(setUser(user.data));
   }, [user, isLoading]);
 
+  useEffect(() => {
+    if (user?.data?.rewardedToday) {
+      handleDailyJoinOpen();
+    }
+  }, [user?.data?.rewardedToday]);
   if (isLoading || !user) return <TicTacToeBackdropLoader />;
+
   return (
     <>
       <GameNavbar userName={user?.data?.userName} coins={user?.data?.coins} />
@@ -160,6 +169,12 @@ const DashBoardPage = () => {
         `}
         </style>
       </Box>
+      <DailyRewardModal
+        open={dailyJoinRoom}
+        onClose={handleDailyJoinClose}
+        rewardCoins={user?.data?.rewardCoins}
+        streak={user?.data?.loginStreak}
+      />
     </>
   );
 };
