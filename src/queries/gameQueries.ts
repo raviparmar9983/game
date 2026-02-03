@@ -1,4 +1,4 @@
-import { createRoom, getGameById, joinGameRoom } from "@/services";
+import { createRoom, gameResult, getGameById, joinGameRoom } from "@/services";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useCreateRoom = () => {
@@ -15,4 +15,12 @@ export const useGame = (gameId: string) => {
 
 export const useJoinGameRoom = () => {
   return useMutation({ mutationFn: joinGameRoom });
+};
+
+export const useGameResult = (gameId: string) => {
+  return useQuery({
+    queryKey: ["gameResult", gameId],
+    queryFn: () => gameResult(gameId),
+    enabled: !!gameId,
+  });
 };

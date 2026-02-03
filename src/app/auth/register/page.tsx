@@ -9,22 +9,20 @@ import { RegisterFormInputs, registerSchema } from "@/schemas";
 import Link from "next/link";
 import { CustomFormTextField, CustomCheckbox, CustomButton } from "@/components";
 import { useRegisterUser } from "@/queries";
-
+import { useRouter } from "next/navigation";
 export default function RegisterPage() {
   const { mutate, isPending } = useRegisterUser();
   const [isRegistered, setIsRegistered] = React.useState(false);
   const { control, handleSubmit, reset } = useForm({
     resolver: yupResolver(registerSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
+      userName: "",
       email: "",
       hash: "",
       confirmPassword: "",
     },
   });
-
+  const router = useRouter();
   const onSubmit = (data: any) => {
     const { ...userPayload } = data;
 
@@ -35,7 +33,8 @@ export default function RegisterPage() {
     mutate(userPayload as RegisterFormInputs, {
       onSuccess: (res) => {
         toast.success(res.message);
-        setIsRegistered(true);
+        router.push("/auth/login");
+        // setIsRegistered(true);
         reset();
       },
       onError: (err: Error) => {
@@ -91,22 +90,9 @@ export default function RegisterPage() {
           </Typography>
 
           <CustomFormTextField
-            name="firstName"
+            name="userName"
             control={control}
-            label="First Name"
-            margin="normal"
-          />
-          <CustomFormTextField
-            name="lastName"
-            control={control}
-            label="Last Name"
-            margin="normal"
-          />
-          <CustomFormTextField
-            name="phoneNumber"
-            control={control}
-            label="Phone Number"
-            type="tel"
+            label="User Name"
             margin="normal"
           />
           <CustomFormTextField

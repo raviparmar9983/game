@@ -1,7 +1,10 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { IconsMap } from "@/icons/IconMap";
+import { useAppSelector } from "@/lib/hooks";
+
+/* ================= TYPES ================= */
 
 export interface Player {
   _id: string;
@@ -21,20 +24,16 @@ interface GridProps {
   currTurn: string;
   onMove?: (payload: MovePayload) => void;
   gridData: string[][];
-  disabled?: boolean;
 }
 
-const GameGrid: React.FC<GridProps> = ({
-  gridSize,
-  players,
-  currTurn,
-  onMove,
-  gridData,
-  disabled = false,
-}) => {
-  const [grid, setGrid] = useState<(string | null)[][]>([]);
+/* ================= COMPONENT ================= */
 
-  // initialize grid
+const GameGrid: React.FC<GridProps> = ({ gridSize, players, currTurn, onMove, gridData }) => {
+  const [grid, setGrid] = useState<(string | null)[][]>([]);
+  const user = useAppSelector((s) => s.user);
+
+  /* ================= GRID INIT ================= */
+
   useEffect(() => {
     if (Array.isArray(gridData) && gridData.length > 0) {
       setGrid(gridData);
@@ -43,19 +42,20 @@ const GameGrid: React.FC<GridProps> = ({
     }
   }, [gridData, gridSize]);
 
-  const currentPlayer = players.find((p) => p._id === currTurn);
+  /* ================= TURN LOGIC ================= */
 
-  const isMyTurn = useCallback((playerId: string) => playerId === currTurn, [currTurn]);
+  const isMyTurn = useMemo(() => {
+    return currTurn === user?._id;
+  }, [currTurn, user?._id]);
+
+  const currentPlayer = useMemo(() => players.find((p) => p._id === currTurn), [players, currTurn]);
+
+  /* ================= CLICK HANDLER ================= */
 
   const handleCellClick = (r: number, c: number) => {
-    if (disabled) return;
+    if (!isMyTurn) return;
     if (!currentPlayer) return;
-    if (!isMyTurn(currentPlayer._id)) return;
     if (grid[r][c] !== null) return;
-
-    const newGrid = grid.map((row) => [...row]);
-    newGrid[r][c] = currentPlayer.icon;
-    // setGrid(newGrid);
 
     onMove?.({
       row: r,
@@ -63,53 +63,77 @@ const GameGrid: React.FC<GridProps> = ({
       playerId: currentPlayer._id,
     });
   };
+
+  /* ================= UI CALCULATIONS ================= */
+
+  const iconSize = useMemo(() => {
+    if (gridSize <= 4) return 36;
+    if (gridSize <= 6) return 30;
+    if (gridSize <= 9) return 22;
+    return 16; // 10–12
+  }, [gridSize]);
+
+  /* ================= RENDER ================= */
+
   return (
     <div
-      key={gridSize ?? ""}
       style={{
+        position: "relative",
+        zIndex: 1,
+        pointerEvents: "auto",
+
         display: "grid",
         gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
-        gridTemplateRows: `repeat(${gridSize}, 1fr)`,
-        width: "100%",
-        maxWidth: "420px",
         aspectRatio: "1 / 1",
+
+        width: "100%",
+        maxWidth: "min(92vw, 420px)",
+        margin: "0 auto",
+
         gap: "4px",
-        padding: "8px",
+        padding: "6px",
         background: "#1e1e1e",
         borderRadius: "12px",
       }}
     >
       {grid.map((row, r) =>
         row.map((cell, c) => {
-          const clickable =
-            !disabled && cell === null && currentPlayer && isMyTurn(currentPlayer._id);
+          const clickable = isMyTurn && cell === null;
 
           return (
             <div
               key={`${r}-${c}`}
-              onClick={() => clickable && handleCellClick(r, c)}
+              onClick={() => {
+                if (clickable) handleCellClick(r, c);
+              }}
               style={{
-                position: "relative",
-                background: "#2a2a2a",
-                borderRadius: "10px",
-                cursor: clickable ? "pointer" : "default",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                fontSize: "32px",
-                userSelect: "none",
-                transition: "background 0.2s ease",
+                pointerEvents: "auto",
 
-                ...(clickable && {
-                  background: "#333",
-                }),
+                background: clickable ? "#333" : "#2a2a2a",
+                borderRadius: "8px",
+                cursor: clickable ? "pointer" : "default",
+
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+
+                userSelect: "none",
+                transition: "background 0.15s ease",
               }}
             >
-              {/* Placed icon */}
-              <span style={{ zIndex: 2 }}>{cell ? IconsMap[cell] : ""}</span>
-
-              {/* Hover preview */}
-              {}
+              {/* ICON */}
+              <div
+                style={{
+                  width: iconSize,
+                  height: iconSize,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  pointerEvents: "none",
+                }}
+              >
+                {cell && IconsMap[cell]}
+              </div>
             </div>
           );
         })
