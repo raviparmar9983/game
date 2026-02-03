@@ -11,13 +11,15 @@ import toast from "react-hot-toast";
 import { ApiResponse } from "@/types";
 import { CustomFormTextField } from "../shared/CustomFormTextField";
 import TicTacToeBackdropLoader from "../shared/Loader";
+import { useQueryClient } from "@tanstack/react-query";
+import { QUERY_KEY } from "@/constants/enums";
 
 type JoinRoom = {
   roomCode: string;
 };
 export const JoinRoomForm = () => {
   const router = useRouter();
-
+  const queryClient = useQueryClient();
   const { control, handleSubmit } = useForm<JoinRoom>({
     defaultValues: { roomCode: "" },
     resolver: yupResolver(joinRoomSchema),
@@ -36,6 +38,7 @@ export const JoinRoomForm = () => {
         if (data?.gameId) {
           router.push(`/game/lobby/${data.gameId}`);
           toast.success(message || "Joined room successfully");
+          queryClient.invalidateQueries({ queryKey: [QUERY_KEY.USER_DATA] });
         } else {
           toast.error("Invalid room code");
         }

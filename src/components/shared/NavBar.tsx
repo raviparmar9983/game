@@ -10,15 +10,7 @@ interface GameNavbarProps {
 
 const GameNavbar = ({ userName, coins }: GameNavbarProps) => {
   return (
-    <AppBar
-      position="sticky"
-      elevation={0}
-      sx={{
-        background: "rgba(10, 10, 20, 0.55)",
-        backdropFilter: "blur(16px)",
-        borderBottom: "1px solid rgba(0, 255, 136, 0.25)",
-      }}
-    >
+    <AppBar position="sticky" elevation={0}>
       <Toolbar
         sx={{
           display: "flex",

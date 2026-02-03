@@ -24,8 +24,16 @@ export const playerDetailsSchema = yup.object().shape({
     .min(2, "At least 2 players must be configured"),
 });
 
-export const createRoomSchema = yup.object({
+export const createRoomSchema = (max: number) => yup.object({
   gridSize: yup.number().required("Grid size is required").min(3).max(12),
+  entryFee: yup
+    .number()
+    .transform((value, originalValue) =>
+      originalValue === "" ? undefined : value
+    )
+    .required("Game coins is required")
+    .min(0, "Game coins cannot be negative")
+    .max(max, `Coins cannot be greater than ${max}`),
   playerCount: yup
     .number()
     .required("Player count is required")

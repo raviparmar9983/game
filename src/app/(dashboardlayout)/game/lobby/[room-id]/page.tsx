@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import { CustomeCodeChip } from "@/components/shared/CustomChip";
 import { useGame } from "@/queries";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
+import { QUERY_KEY } from "@/constants/enums";
 // import toast from "react-hot-toast";
 
 interface Player {
@@ -34,7 +36,7 @@ const GameLobbyPage = () => {
   const router = useRouter();
   const [actionInProgress, setActionInProgress] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
+  const queryClient = useQueryClient();
   const gameId = searchParam["room-id"] as string;
   const iconKeys = Object.keys(Icons);
   const { data: gameResp, isLoading: gameLoading } = useGame(gameId);
@@ -54,6 +56,7 @@ const GameLobbyPage = () => {
 
     const onPlayerJoined = (data: { players: Player[]; host?: string }) => {
       setPlayers(data.players || []);
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.USER_DATA] });
       if (data.host) setHostId(data.host);
       setIsLoading(false);
     };

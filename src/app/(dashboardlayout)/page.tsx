@@ -9,7 +9,6 @@ import { setUser } from "@/lib/reducers/userReducer";
 import { useRouter } from "next/navigation";
 import { Box, Typography, Card, Grid } from "@mui/material";
 import { JoinRoomForm } from "@/components/game/JoinRoom";
-import { GameIcon } from "@/icons/icons";
 import GameNavbar from "@/components/shared/NavBar";
 import { DailyRewardModal } from "@/components/game/DailyReward";
 
@@ -121,9 +120,15 @@ const DashBoardPage = () => {
             {[
               {
                 label: "Join Room",
-                icon: <GameIcon fontSize="small" />,
+                // icon: <GameIcon fontSize="small" />,
                 action: handleJoinRoomOpen,
                 route: null,
+              },
+              {
+                label: "How to Play",
+                // icon: <InfoOutlined fontSize="small" />,
+                action: null,
+                route: "/how-to-play",
               },
             ].map((b, i) => (
               <Grid size={{ xs: 12 }} key={i}>
@@ -136,7 +141,7 @@ const DashBoardPage = () => {
                     else if (b.route) router.push(b.route);
                   }}
                 >
-                  {b.icon}
+                  {/* {b.icon} */}
                   {b.label}
                 </CustomButton>
               </Grid>

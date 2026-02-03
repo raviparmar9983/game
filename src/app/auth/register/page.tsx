@@ -9,7 +9,7 @@ import { RegisterFormInputs, registerSchema } from "@/schemas";
 import Link from "next/link";
 import { CustomFormTextField, CustomCheckbox, CustomButton } from "@/components";
 import { useRegisterUser } from "@/queries";
-
+import { useRouter } from "next/navigation";
 export default function RegisterPage() {
   const { mutate, isPending } = useRegisterUser();
   const [isRegistered, setIsRegistered] = React.useState(false);
@@ -22,7 +22,7 @@ export default function RegisterPage() {
       confirmPassword: "",
     },
   });
-
+  const router = useRouter();
   const onSubmit = (data: any) => {
     const { ...userPayload } = data;
 
@@ -33,7 +33,8 @@ export default function RegisterPage() {
     mutate(userPayload as RegisterFormInputs, {
       onSuccess: (res) => {
         toast.success(res.message);
-        setIsRegistered(true);
+        router.push("/auth/login");
+        // setIsRegistered(true);
         reset();
       },
       onError: (err: Error) => {

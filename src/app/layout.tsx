@@ -67,10 +67,10 @@ export const metadata: Metadata = {
   //   creator: "@tactra_game", // optional
   // },
 
-  icons: {
-    icon: "/icon.png",
-    apple: "/icon.png",
-  },
+  // icons: {
+  //   icon: "/icon.png",
+  //   apple: "/icon.png",
+  // },
 
   category: "Gaming",
 };

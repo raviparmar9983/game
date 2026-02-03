@@ -10,16 +10,24 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { ApiResponse, CreateRoomFormInputs } from "@/types";
 import { CustomButton } from "../shared/CustomButton";
+import { useAppSelector } from "@/lib/hooks";
+import { useMemo } from "react";
+import { CustomFormTextField } from "../shared/CustomFormTextField";
+import { useQueryClient } from "@tanstack/react-query";
+import { QUERY_KEY } from "@/constants/enums";
 
 export const CreateRoomForm = () => {
   const router = useRouter();
-
+  const queryClient = useQueryClient();
+  const user = useAppSelector((state) => state.user);
+  const schema = useMemo(() => createRoomSchema(user.coins || 0), [user.coins]);
   const { control, handleSubmit, watch, setValue } = useForm<CreateRoomFormInputs>({
     defaultValues: {
       gridSize: 3,
       playerCount: 2,
+      entryFee: 0,
     },
-    resolver: yupResolver(createRoomSchema),
+    resolver: yupResolver(schema),
   });
 
   const { mutate, isPending } = useCreateRoom();
@@ -34,6 +42,7 @@ export const CreateRoomForm = () => {
     mutate(data, {
       onSuccess: (res: ApiResponse) => {
         const { message, data } = res;
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.USER_DATA] });
         router.push(`/game/lobby/${data?._id}`);
         toast.success(message);
       },
@@ -52,6 +61,15 @@ export const CreateRoomForm = () => {
       <LinearProgress variant="determinate" value={100} sx={{ mb: 3 }} />
 
       <form onSubmit={handleSubmit(onSubmit)}>
+        <CustomFormTextField
+          name="entryFee"
+          control={control}
+          label="Coins"
+          type="number"
+          margin="normal"
+          fullWidth
+        />
+
         <Typography variant="h6" gutterBottom>
           Choose Grid Size
         </Typography>
