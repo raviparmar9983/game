@@ -67,7 +67,7 @@ const CurrentTurnDisplay: React.FC<CurrentTurnProps> = ({ players, currTurn }) =
             fontWeight: 600,
           }}
         >
-          {currentPlayer.firstName} {currentPlayer.lastName}
+          {currentPlayer.userName}
         </span>
       </div>
     </div>

@@ -14,7 +14,11 @@ function DashBoardLayout({ children }: { children: React.ReactNode }) {
       dispatch(setUser(user.data));
     }
   }, [user, isLoading, dispatch]);
-  return <SocketProvider>{children}</SocketProvider>;
+  return (
+    <>
+      <SocketProvider>{children}</SocketProvider>
+    </>
+  );
 }
 
 export default DashBoardLayout;

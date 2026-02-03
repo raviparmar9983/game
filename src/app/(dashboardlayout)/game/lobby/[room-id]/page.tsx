@@ -10,12 +10,14 @@ import { useSocket } from "@/context";
 import { useRouter } from "next/navigation";
 import { CustomeCodeChip } from "@/components/shared/CustomChip";
 import { useGame } from "@/queries";
+import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
+import { QUERY_KEY } from "@/constants/enums";
 // import toast from "react-hot-toast";
 
 interface Player {
   _id: string;
-  firstName: string;
-  lastName: string;
+  userName: string;
   email?: string;
   isConnected?: boolean;
   isReady?: boolean;
@@ -34,7 +36,7 @@ const GameLobbyPage = () => {
   const router = useRouter();
   const [actionInProgress, setActionInProgress] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
+  const queryClient = useQueryClient();
   const gameId = searchParam["room-id"] as string;
   const iconKeys = Object.keys(Icons);
   const { data: gameResp, isLoading: gameLoading } = useGame(gameId);
@@ -54,6 +56,7 @@ const GameLobbyPage = () => {
 
     const onPlayerJoined = (data: { players: Player[]; host?: string }) => {
       setPlayers(data.players || []);
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.USER_DATA] });
       if (data.host) setHostId(data.host);
       setIsLoading(false);
     };
@@ -88,6 +91,44 @@ const GameLobbyPage = () => {
       socket.off("playerUpdated", onPlayerUpdated);
     };
   }, [socket, currentUser._id]);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    const onSocketError = (data: { message: string }) => {
+      const msg = data?.message || "Something went wrong";
+
+      toast.error(msg);
+      setIsLoading(false);
+
+      // ✅ ICON SELECTION & GAME STATE BASED REDIRECTION
+      if (msg.includes("Game already started") || msg.includes("icon locked")) {
+        // Game started while user was selecting icon
+        router.push(`/game/play/${gameId}`);
+        return;
+      } else if (msg.includes("Game not found") || msg.includes("Not allowed")) {
+        // Kicked out / wrong user
+        router.push("/");
+        return;
+      } else if (
+        msg.includes("Icon already taken") ||
+        msg.includes("All players must select icon")
+      ) {
+        return;
+      }
+
+      // ✅ Fallback safety
+      else {
+        router.push("/");
+      }
+    };
+
+    socket.on("ERROR", onSocketError);
+
+    return () => {
+      socket.off("ERROR", onSocketError);
+    };
+  }, [socket, gameId, router]);
 
   useEffect(() => {
     const me = players.find((p) => p._id === currentUser._id);
@@ -131,9 +172,7 @@ const GameLobbyPage = () => {
   if (isLoading || gameLoading) return <TicTacToeBackdropLoader />;
 
   const displayName = (p: Player) => {
-    const first = p.firstName || "";
-    const lastInitial = p.lastName ? ` ${p.lastName?.[0]}.` : "";
-    return `${first}${lastInitial}`;
+    return p.userName;
   };
 
   return (
@@ -220,7 +259,7 @@ const GameLobbyPage = () => {
               >
                 {/* Left: Avatar & Info */}
                 <Box display="flex" alignItems="center" gap={2}>
-                  <Avatar>{player.firstName?.[0] || "?"}</Avatar>
+                  <Avatar>{player.userName?.[0] || "?"}</Avatar>
                   <Box>
                     <Typography variant="body1" fontWeight={600}>
                       {displayName(player)}
