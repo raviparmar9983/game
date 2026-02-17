@@ -82,7 +82,7 @@ export const CreateBotRoomForm = () => {
         </Typography>
 
         <Grid container spacing={2} sx={{ mb: 4 }}>
-          {[3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((size) => (
+          {[3, 4, 5, 6].map((size) => (
             <Grid size={{ xs: 4, sm: 3 }} key={size}>
               <Button
                 fullWidth
