@@ -11,15 +11,19 @@ import { Box, Typography, Card, Grid } from "@mui/material";
 import { JoinRoomForm } from "@/components/game/JoinRoom";
 import GameNavbar from "@/components/shared/NavBar";
 import { DailyRewardModal } from "@/components/game/DailyReward";
+import { CreateBotRoomForm } from "@/components/game/CreateBotRoom";
 
 const DashBoardPage = () => {
   const [open, setOpen] = useState(false);
   const [openJoinRoom, setJoinRoomOpen] = useState(false);
   const [dailyJoinRoom, setDailyRewardOpen] = useState(false);
+  const [createBotOpen, setCreateBotOpen] = useState(false);
   const handleJoinRoomOpen = useCallback(() => setJoinRoomOpen(true), []);
   const handleJoinRoomClose = useCallback(() => setJoinRoomOpen(false), []);
   const handleDailyJoinOpen = useCallback(() => setDailyRewardOpen(true), []);
   const handleDailyJoinClose = useCallback(() => setDailyRewardOpen(false), []);
+  const handleCreateBotOpen = useCallback(() => setCreateBotOpen(true), []);
+  const handleCreateBotClose = useCallback(() => setCreateBotOpen(false), []);
   const handleOpen = useCallback(() => setOpen(true), []);
   const handleClose = useCallback(() => setOpen(false), []);
   const router = useRouter();
@@ -108,6 +112,12 @@ const DashBoardPage = () => {
             Ready to create your next game room?
           </Typography>
 
+          <Box textAlign="center" mb={2}>
+            <CustomButton onClick={handleCreateBotOpen} size="large" color="primary" fullWidth>
+              Play now
+            </CustomButton>
+          </Box>
+
           {/* Main CTA */}
           <Box textAlign="center">
             <CustomButton onClick={handleOpen} size="large" color="primary" fullWidth>
@@ -116,7 +126,7 @@ const DashBoardPage = () => {
           </Box>
 
           {/* Options */}
-          <Grid container spacing={2} mt={5}>
+          <Grid container spacing={2} mt={2}>
             {[
               {
                 label: "Join Room",
@@ -161,6 +171,10 @@ const DashBoardPage = () => {
           anchor="right"
         >
           <JoinRoomForm />
+        </CustomModal>
+
+        <CustomModal open={createBotOpen} onClose={handleCreateBotClose} animation="slide" anchor="right">
+          <CreateBotRoomForm />
         </CustomModal>
 
         {/* Float Animation */}

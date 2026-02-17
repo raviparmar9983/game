@@ -20,3 +20,8 @@ export const gameResult = async (gameId: string) => {
   const response = await api.get(`game/${gameId}/result`);
   return response.data;
 };
+
+export const createBotRoom = async (data: CreateRoomFormInputs) => {
+  const response = await api.post("bot", data);
+  return response.data;
+};
