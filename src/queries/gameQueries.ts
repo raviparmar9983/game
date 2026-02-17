@@ -1,4 +1,4 @@
-import { createRoom, gameResult, getGameById, joinGameRoom } from "@/services";
+import { createBotRoom, createRoom, gameResult, getGameById, joinGameRoom } from "@/services";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useCreateRoom = () => {
@@ -24,3 +24,8 @@ export const useGameResult = (gameId: string) => {
     enabled: !!gameId,
   });
 };
+
+
+export const useCreateBotRoom = () => {
+  return useMutation({ mutationFn: createBotRoom });
+}
